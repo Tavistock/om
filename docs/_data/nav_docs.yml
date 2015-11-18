@@ -1,0 +1,36 @@
+- title: Quick Start
+  items:
+  - id: quick-start
+    title: Quick Start Title
+- title: Om
+  items:
+  - title: Tutorials
+    items:
+    - id: om/basic-tutorial
+      title: Basic Tutorial
+    - id: om/intermediate-tutorial
+      title: Intermediate Tutorial
+    - id: om/advance-tutorial
+      title: Advance Tutorial
+  - title: Documentation
+    items:
+    - id: om/documentation
+      title: Documentation
+  - title: Other
+    items:
+    - id: om/testing
+      title: Testing
+- title: Om.next
+  items:
+  - title: Guide
+    items:
+    - id: guide-name
+      title: Guide Title
+  - title: Reference
+    items:
+    - id: reference-name
+      title: Reference Title
+- title: Resources
+  items:
+  - id: videos
+    title: Videos
