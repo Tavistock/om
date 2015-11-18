@@ -88,10 +88,10 @@ li {
   line-height: 20px; }
 
 a {
-  color: #7fb335;
+  color: #d98808;
   text-decoration: none; }
   a:hover, a:focus {
-    color: #668f2a;
+    color: #ac6c07;
     text-decoration: underline; }
   a:focus {
     outline: thin dotted #333;
@@ -193,10 +193,10 @@ h1:hover .hash-link, h2:hover .hash-link, h3:hover .hash-link, h4:hover .hash-li
       color: #fff; }
     .nav-main .nav-site a.active {
       color: #fafafa;
-      border-bottom: 3px solid #96CA4B;
+      border-bottom: 3px solid #F6A019;
       background: #333; }
   .nav-main .nav-home {
-    color: #5F7FBF;
+    color: #3E5961;
     font-size: 24px;
     line-height: 50px;
     height: 50px;
@@ -224,20 +224,20 @@ h1:hover .hash-link, h2:hover .hash-link, h3:hover .hash-link, h4:hover .hash-li
     text-align: center;
     text-transform: uppercase; }
   .hero strong {
-    color: #5F7FBF;
+    color: #3E5961;
     font-weight: 400; }
 
 .buttons-unit {
   margin-top: 60px;
   text-align: center; }
   .buttons-unit a {
-    color: #5F7FBF; }
+    color: #3E5961; }
   .buttons-unit .button {
     font-size: 24px;
-    background: #96CA4B;
+    background: #F6A019;
     color: #fafafa; }
     .buttons-unit .button:active {
-      background: #8ac239; }
+      background: #ec9409; }
 
 .nav-docs {
   color: #2d2d2d;
@@ -264,9 +264,9 @@ h1:hover .hash-link, h2:hover .hash-link, h3:hover .hash-link, h4:hover .hash-li
     display: block; }
     .nav-docs a:hover {
       text-decoration: none;
-      color: #96CA4B; }
+      color: #F6A019; }
     .nav-docs a.active {
-      color: #96CA4B; }
+      color: #F6A019; }
   .nav-docs .nav-docs-section {
     border-bottom: 1px solid #ccc;
     border-top: 1px solid #eee;
