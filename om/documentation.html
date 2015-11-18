@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Documentation | Om</title>
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="/css/om.css">
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css">
+</head>
+
+<body>
+  <div class="container">
+
+  <div class="nav-main">
+    <div class="wrap">
+      <a class="nav-home" href="/index.html">
+        <img class="nav-logo" src="/img/logo.svg" width="36" height="36">
+        Om
+      </a>
+      <ul class="nav-site nav-site-internal">
+        <li><a href="/docs/index.html" class="active">Docs</a></li>
+        <li><a href="community.html">Community</a></li>
+      </ul>
+
+      <ul class="nav-site nav-site-external">
+        <li><a href="https://github.com/omcljs/om">GitHub</a>
+      </ul>
+    </div>
+  </div>
+
+  
+
+  <section class="content wrap documentationContent">
+  
+<div class="nav-docs">
+  <!-- Docs Nav -->
+  
+    <div class="nav-docs-section">
+      <h3>Quick Start</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Quick Start Title</h4>
+          
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+    <div class="nav-docs-section">
+      <h3>Om</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Tutorials</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/om/basic-tutorial.html">Basic Tutorial</a>
+                </li>
+              
+                <li>
+                  <a href="/om/intermediate-tutorial.html">Intermediate Tutorial</a>
+                </li>
+              
+                <li>
+                  <a href="/om/advance-tutorial.html">Advance Tutorial</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+        <li>
+          
+            <h4>Documentation</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/om/documentation.html" class="active">Documentation</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+        <li>
+          
+            <h4>Other</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/om/testing.html">Testing</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+    <div class="nav-docs-section">
+      <h3>Om.next</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Guide</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/guide-name.html">Guide Title</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+        <li>
+          
+            <h4>Reference</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/reference-name.html">Reference Title</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+    <div class="nav-docs-section">
+      <h3>Resources</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Videos</h4>
+          
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+</div>
+
+
+  <div class="inner-content">
+    <h1>
+      Documentation
+      <a class="edit-page-link" href="https://github.com/omcljs/om/tree/master/docs/docs/om/Documentation.md" target="_blank">Edit on GitHub</a>
+    </h1>
+    <div class="subHeader"></div>
+
+    <h3><a class="anchor" name="table-of-contents"></a>Table of Contents <a class="hash-link" href="#table-of-contents">#</a></h3><h4><a class="anchor" name="om.core"></a>om.core <a class="hash-link" href="#om.core">#</a></h4>
+<ul>
+<li><a href="#life-cycle-protocols">Life Cycle Protocols</a>
+
+<ul>
+<li><a href="#iinitstate">IInitState</a></li>
+<li><a href="#iwillmount">IWillMount</a></li>
+<li><a href="#ididmount">IDidMount</a></li>
+<li><a href="#ishouldupdate">IShouldUpdate</a></li>
+<li><a href="#iwillreceiveprops">IWillReceiveProps</a></li>
+<li><a href="#iwillupdate">IWillUpdate</a></li>
+<li><a href="#ididupdate">IDidUpdate</a></li>
+<li><a href="#irender">IRender</a></li>
+<li><a href="#irenderstate">IRenderState</a></li>
+<li><a href="#idisplayname">IDisplayName</a></li>
+<li><a href="#iwillunmount">IWillUnmount</a></li>
+</ul></li>
+<li><a href="#functions">Functions</a>
+
+<ul>
+<li><a href="#get-props">get-props</a></li>
+<li><a href="#get-state">get-state</a></li>
+<li><a href="#get-shared">get-shared</a></li>
+<li><a href="#root">root</a></li>
+<li><a href="#build">build</a></li>
+<li><a href="#build-1">build*</a></li>
+<li><a href="#build-all">build-all</a></li>
+<li><a href="#transact">transact!</a></li>
+<li><a href="#update">update!</a></li>
+<li><a href="#path">path</a></li>
+<li><a href="#state">state</a></li>
+<li><a href="#value">value</a></li>
+<li><a href="#get-node">get-node</a></li>
+<li><a href="#set-state">set-state!</a></li>
+<li><a href="#update-state">update-state!</a></li>
+<li><a href="#refresh">refresh!</a></li>
+<li><a href="#get-render-state">get-render-state</a></li>
+<li><a href="#detach-root">detach-root</a></li>
+<li><a href="#root-cursor">root-cursor</a></li>
+<li><a href="#ref-cursor">ref-cursor</a></li>
+<li><a href="#observe">observe</a></li>
+</ul></li>
+<li><a href="#macros">Macros</a>
+
+<ul>
+<li><a href="#component">component</a></li>
+</ul></li>
+</ul>
+<h4><a class="anchor" name="om.dom"></a>om.dom <a class="hash-link" href="#om.dom">#</a></h4>
+<ul>
+<li><a href="#props">Props</a></li>
+<li><a href="#render-to-str">render-to-str</a></li>
+</ul>
+<h1><a class="anchor" name="om.core"></a>om.core <a class="hash-link" href="#om.core">#</a></h1><h2><a class="anchor" name="life-cycle-protocols"></a>Life Cycle Protocols <a class="hash-link" href="#life-cycle-protocols">#</a></h2>
+<p>The Om life cycle protocols map more or less directly to the life
+cycle API present in Facebook&#39;s React.</p>
+
+<p>Om component functions return <code>reify</code> instances that implement the Om
+life cycle protocols. When <code>this</code> is used in a lifecycle protocol it refers
+to the reify instance. As a rule of thumb it is not needed and can be discarded.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">my-widget</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/h1</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Hello world!"</span><span class="p">))))</span><span class="w">
+</span></code></pre></div>
+<p>It&#39;s important to understand that <code>my-widget</code> will be called many
+times. Thus it&#39;s an anti-pattern to wrap <code>reify</code> in a <code>let</code> to
+allocate stateful entities like core.async channels. Stateful entities
+should be stored in component local state - <code>om.core/IInitState</code> or
+<code>om.core/IWillMount</code> are good places to do this.</p>
+<h3><a class="anchor" name="iinitstate"></a>IInitState <a class="hash-link" href="#iinitstate">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defprotocol</span><span class="w"> </span><span class="n">IInitState</span><span class="w">
+  </span><span class="p">(</span><span class="nf">init-state</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="p">]))</span><span class="w">
+</span></code></pre></div>
+<p>Called only once on an Om component. Implementations should return a map
+of initial state.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">my-widget</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IInitState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">init-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">{</span><span class="no">:text</span><span class="w"> </span><span class="s">"Hello world!"</span><span class="p">})</span><span class="w">
+    </span><span class="n">om/IRenderState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="n">state</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/h1</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">(</span><span class="no">:text</span><span class="w"> </span><span class="n">state</span><span class="p">)))))</span><span class="w">
+</span></code></pre></div><h3><a class="anchor" name="iwillmount"></a>IWillMount <a class="hash-link" href="#iwillmount">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defprotocol</span><span class="w"> </span><span class="n">IWillMount</span><span class="w">
+  </span><span class="p">(</span><span class="nf">will-mount</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="p">]))</span><span class="w">
+</span></code></pre></div>
+<p>Called once when the component is about to be mounted into the DOM. A
+useful place to establish persistent information and control like
+core.async channels and go loops.</p>
+<h3><a class="anchor" name="ididmount"></a>IDidMount <a class="hash-link" href="#ididmount">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defprotocol</span><span class="w"> </span><span class="n">IDidMount</span><span class="w">
+  </span><span class="p">(</span><span class="nf">did-mount</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="p">]))</span><span class="w">
+</span></code></pre></div>
+<p>Called once when the component has been mounted into the DOM. The DOM node associated with this component can be retrieved by using <code>(om.core/get-node owner)</code>.</p>
+
+<p>This is a good place to initialize persistent information and control
+that needs the DOM to be present.</p>
+<h3><a class="anchor" name="ishouldupdate"></a>IShouldUpdate <a class="hash-link" href="#ishouldupdate">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defprotocol</span><span class="w"> </span><span class="n">IShouldUpdate</span><span class="w">
+  </span><span class="p">(</span><span class="nf">should-update</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="w"> </span><span class="n">next-props</span><span class="w"> </span><span class="n">next-state</span><span class="p">]))</span><span class="w">
+</span></code></pre></div>
+<p>You should only implement this if you really know what you&#39;re
+doing. Even then you probably shouldn&#39;t.</p>
+
+<p>Implementations should return a boolean value. If true then the
+component&#39;s <code>om.core/IRender</code> or <code>om.core/IRenderState</code> implementation
+will be called. This provides the opportunity to prevent components
+from re-rendering in response to certain changes in app (props) or local
+state. Please note that preventing components from re-rendering
+in response to props or state change could result in the DOM being out
+of sync with application or local state. </p>
+
+<p><code>next-props</code> is the next application state that the component is
+associated with. <code>next-state</code> is the next component local state, it is
+always a map.</p>
+
+<p>In your implementation if you wish to detect prop transitions <strong>you
+must use <code>om.core/get-props</code></strong> to get the previous props. This is because your component
+constructor function is called with the updated props.</p>
+<h3><a class="anchor" name="iwillreceiveprops"></a>IWillReceiveProps <a class="hash-link" href="#iwillreceiveprops">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defprotocol</span><span class="w"> </span><span class="n">IWillReceiveProps</span><span class="w">
+  </span><span class="p">(</span><span class="nf">will-receive-props</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="w"> </span><span class="n">next-props</span><span class="p">]))</span><span class="w">
+</span></code></pre></div>
+<p>Not called on the first render, will be called on all subsequent
+renders. This is a good place to detect app state changes and make 
+updates to local component state using om/set-state! or 
+om/update-state!.</p>
+
+<p><code>next-props</code> is the next application state associated with this
+component.</p>
+
+<p>In your implementation if you wish to detect prop transitions <strong>you
+must use <code>om.core/get-props</code></strong> to get the previous props. This is 
+because your component constructor function is called with the 
+updated props.</p>
+<h3><a class="anchor" name="iwillupdate"></a>IWillUpdate <a class="hash-link" href="#iwillupdate">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defprotocol</span><span class="w"> </span><span class="n">IWillUpdate</span><span class="w">
+  </span><span class="p">(</span><span class="nf">will-update</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="w"> </span><span class="n">next-props</span><span class="w"> </span><span class="n">next-state</span><span class="p">]))</span><span class="w">
+</span></code></pre></div>
+<p>Not called on the first render, will be called on all subsequent
+renders. This is a good place to detect and act on state transitions.</p>
+
+<p><code>next-props</code> is the next application state associated with this
+component. <code>next-state</code> is the next component local state, it is
+always a map.</p>
+
+<p>In your implementation if you wish to detect prop transitions <strong>you
+must use <code>om.core/get-props</code></strong> to get the previous props. This is 
+because your component constructor function is called with the 
+updated props. Similarly, if you wish to detect local state transitions, you should use
+<code>om.core/get-render-state</code> to get the previous local state.</p>
+
+<p>Note:: You cannot update local component state in this method. 
+If you wish to change local state in response to prop changes use
+IWillReceiveProps. </p>
+<h3><a class="anchor" name="ididupdate"></a>IDidUpdate <a class="hash-link" href="#ididupdate">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defprotocol</span><span class="w"> </span><span class="n">IDidUpdate</span><span class="w">
+  </span><span class="p">(</span><span class="nf">did-update</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="w"> </span><span class="n">prev-props</span><span class="w"> </span><span class="n">prev-state</span><span class="p">]))</span><span class="w">
+</span></code></pre></div>
+<p>Called when React has rendered the component into the
+DOM. <code>prev-props</code> is the previous application state associated with
+this component. <code>prev-state</code> is the previous component local state, it
+is always a map.</p>
+<h3><a class="anchor" name="irender"></a>IRender <a class="hash-link" href="#irender">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defprotocol</span><span class="w"> </span><span class="n">IRender</span><span class="w">
+  </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="p">]))</span><span class="w">
+</span></code></pre></div>
+<p>Called on all changes to application state or component local
+state. Must return an Om component, a React component, or some value
+that React knows how to render.</p>
+
+<p>If you implement <code>om.core/IRender</code> you should not implement
+<code>om.core/IRenderState</code>.</p>
+<h3><a class="anchor" name="irenderstate"></a>IRenderState <a class="hash-link" href="#irenderstate">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defprotocol</span><span class="w"> </span><span class="n">IRenderState</span><span class="w">
+  </span><span class="p">(</span><span class="nf">render-state</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="w"> </span><span class="n">state</span><span class="p">]))</span><span class="w">
+</span></code></pre></div>
+<p>The only difference between <code>om.core/IRender</code> and
+<code>om.core/IRenderState</code> is that <code>IRenderState</code> implementations get the
+state as an argument. <code>state</code> is always a map, you can use destructuring.</p>
+
+<p>If you implement <code>om.core/IRenderState</code> you should not implement
+<code>om.core/IRender</code>.</p>
+<h3><a class="anchor" name="idisplayname"></a>IDisplayName <a class="hash-link" href="#idisplayname">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defprotocol</span><span class="w"> </span><span class="n">IDisplayName</span><span class="w">
+  </span><span class="p">(</span><span class="nf">display-name</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="p">]))</span><span class="w">
+</span></code></pre></div>
+<p>Return a string name to be used for debugging. The Chrome <a href="https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi">React Developer Tools</a> extension uses this to name the components.</p>
+<h3><a class="anchor" name="iwillunmount"></a>IWillUnmount <a class="hash-link" href="#iwillunmount">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defprotocol</span><span class="w"> </span><span class="n">IWillUnmount</span><span class="w">
+  </span><span class="p">(</span><span class="nf">will-unmount</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="p">]))</span><span class="w">
+</span></code></pre></div>
+<p>Called immediately before a component is unmounted from the DOM.</p>
+
+<p>Perform any necessary cleanup in this method, such as invalidating timers or cleaning up any DOM elements that were created in <code>om.core/IDidMount</code>.</p>
+<h2><a class="anchor" name="functions"></a>Functions <a class="hash-link" href="#functions">#</a></h2><h3><a class="anchor" name="get-props"></a>get-props <a class="hash-link" href="#get-props">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">get-props</span><span class="w"> </span><span class="p">[</span><span class="n">owner</span><span class="p">]</span><span class="w">
+   </span><span class="n">...</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p><code>owner</code> is the backing Om component. <code>om.core/get-props</code> returns the
+<em>cursor</em> into the application state associated with the Om
+component. A <em>cursor</em> is a piece of the application state that knows
+how to update itself.</p>
+<h3><a class="anchor" name="get-state"></a>get-state <a class="hash-link" href="#get-state">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">get-state</span><span class="w">
+  </span><span class="p">([</span><span class="n">owner</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="p">([</span><span class="n">owner</span><span class="w"> </span><span class="n">korks</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p><code>owner</code> is the backing Om component. <code>korks</code> is a key or sequence of
+keys. Will return the specified piece of component local state. Will
+always return pending state.</p>
+<h3><a class="anchor" name="get-shared"></a>get-shared <a class="hash-link" href="#get-shared">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">get-shared</span><span class="w">
+  </span><span class="p">([</span><span class="n">owner</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="p">([</span><span class="n">owner</span><span class="w"> </span><span class="n">korks</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p><code>owner</code> is the backing Om component. <code>korks</code> is a key or sequence of
+keys. It will return data that is shared across the entire render tree. 
+You can set global shared data with <code>om.core/root</code>.</p>
+<h3><a class="anchor" name="root"></a>root <a class="hash-link" href="#root">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="nb">root</span><span class="w">
+  </span><span class="p">([</span><span class="n">f</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">options</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p><code>f</code> is a function returning an instance of <code>IRender</code> or <code>IRenderState</code>.
+<code>f</code> takes two arguments, a root cursor on the application state and
+the backing Om component for the root.</p>
+
+<p><code>value</code> is either a tree of
+associative ClojureScript data structures or an atom wrapping a tree
+of associative ClojureScript data structures.</p>
+
+<p><code>options</code> is a map containing any key allowed to <code>om.core/build</code>.
+Additionally the following keys are allowed/required:</p>
+
+<ul>
+<li><code>:target</code> (required)</li>
+<li><code>:shared</code> (optional) in order to provide global services</li>
+<li><code>:tx-listen</code> a function that will listen in on transactions, should take 2 arguments:
+
+<ol>
+<li>a map containing the path, old and new state at path, old and new global state, and transaction tag if provided (<code>:path</code>, <code>:old-value</code>, <code>:new-value</code>, <code>:old-state</code>, <code>:new-state</code> and <code>:tag</code>).</li>
+<li>the root cursor.</li>
+</ol></li>
+<li><code>:path</code> to specify the path of the cursor into app-state (see
+<a href="https://github.com/swannodette/om/issues/72">#72</a>)</li>
+<li><code>:instrument</code> a function of three arguments that if provided will
+intercept all calls to <code>om.core/build</code>. The function arguments
+correspond exactly to the three argument arity of <code>om.core/build</code></li>
+</ul>
+
+<p><code>om.core/root</code> is idempotent. You may safely call it multiple
+times. Only one Om render loop is ever allowed on a particular DOM
+target.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">om.core/root</span><span class="w">
+  </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">app-state</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+      </span><span class="n">om.core/IRender</span><span class="w">
+      </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/h1</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">(</span><span class="no">:text</span><span class="w"> </span><span class="n">app-state</span><span class="p">)))))</span><span class="w">
+  </span><span class="p">{</span><span class="no">:text</span><span class="w"> </span><span class="s">"Hello world!"</span><span class="p">}</span><span class="w">
+  </span><span class="p">{</span><span class="no">:target</span><span class="w"> </span><span class="p">(</span><span class="nb">.</span><span class="w"> </span><span class="n">js/document</span><span class="w"> </span><span class="n">getElementById</span><span class="w"> </span><span class="s">"my-app"</span><span class="p">)})</span><span class="w">   
+</span></code></pre></div><h3><a class="anchor" name="build"></a>build <a class="hash-link" href="#build">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">build</span><span class="w">
+  </span><span class="p">([</span><span class="n">f</span><span class="w"> </span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="p">([</span><span class="n">f</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">m</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p>Constructs an Om component. <code>f</code> must be a function that returns an
+instance of <code>om.core/IRender</code> or <code>om.core/IRenderState</code>. <code>f</code> must take
+two arguments - a value and the backing Om component usually referred
+to as the owner. <code>f</code> can take a third argument if <code>:opts</code> is specified
+in <code>m</code>. The component is identified by the function <code>f</code>. Changing <code>f</code>
+to a different function will construct a new component, while changing
+the return value will not change component.  <code>x</code> can be any value. <code>m</code>
+is an optional map of options.</p>
+
+<p>Only the following keys are allowed in <code>m</code>.</p>
+
+<p><code>:key</code> - a keyword that will be used to lookup a value in <code>x</code> to
+be used as a <a href="http://facebook.github.io/react/docs/multiple-components.html#dynamic-children">React key</a>.</p>
+
+<p><code>:react-key</code> - a value to use as a <a href="http://facebook.github.io/react/docs/multiple-components.html#dynamic-children">React key</a>.</p>
+
+<p><code>:fn</code> - a function to apply to <code>x</code> before invoking <code>f</code>.</p>
+
+<p><code>:init-state</code> - a map of initial state to set on the component (state from <code>IInitState</code> is merged onto it).</p>
+
+<p><code>:state</code> - a map of state to merge into the component.</p>
+
+<p><code>:opts</code> - a map of side information.</p>
+<h3><a class="anchor" name="build"></a>build* <a class="hash-link" href="#build">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">build*</span><span class="w">
+  </span><span class="p">([</span><span class="n">f</span><span class="w"> </span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="p">([</span><span class="n">f</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="n">m</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p>Identical to <code>om.core/build</code> except cannot be intercepted by the
+<code>:instrument</code> argument provided to <code>om.core/root</code>. Needed to avoid
+infinite loops in components constructed via <code>:instrument</code>.</p>
+<h3><a class="anchor" name="build-all"></a>build-all <a class="hash-link" href="#build-all">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">build-all</span><span class="w">
+  </span><span class="p">([</span><span class="n">f</span><span class="w"> </span><span class="n">xs</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="p">([</span><span class="n">f</span><span class="w"> </span><span class="n">xs</span><span class="w"> </span><span class="n">m</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p>Conceptually the same as <code>om.core/build</code>, the only difference is that
+it returns a sequence of Om components. <code>xs</code> is a sequence of
+values. <code>f</code> and <code>m</code> are the same as <code>om.core/build</code>.</p>
+<h3><a class="anchor" name="transact"></a>transact! <a class="hash-link" href="#transact">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">transact!</span><span class="w">
+  </span><span class="p">([</span><span class="n">cursor</span><span class="w"> </span><span class="n">f</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="p">([</span><span class="n">cursor</span><span class="w"> </span><span class="n">korks</span><span class="w"> </span><span class="n">f</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="p">([</span><span class="n">cursor</span><span class="w"> </span><span class="n">korks</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="n">tag</span><span class="p">])</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p>The primary way to transition application state. <code>cursor</code> is an Om
+cursor into the application state. <code>f</code> is a function that will receive
+the specified piece of application state. <code>korks</code> is an optional
+key or sequence of keys to access in the cursor. <code>tag</code> is optional
+information to tag the transaction. <code>tag</code> should be either a keyword
+or a vector whose first element is a <code>keyword</code>.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">transact!</span><span class="w"> </span><span class="n">cursor</span><span class="w"> </span><span class="no">:text</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w"> </span><span class="s">"Changed this!"</span><span class="p">))</span><span class="w">
+</span></code></pre></div><h3><a class="anchor" name="update"></a>update! <a class="hash-link" href="#update">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">update!</span><span class="w">
+  </span><span class="p">([</span><span class="n">cursor</span><span class="w"> </span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="p">([</span><span class="n">cursor</span><span class="w"> </span><span class="n">korks</span><span class="w"> </span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="p">([</span><span class="n">cursor</span><span class="w"> </span><span class="n">korks</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="n">tag</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p>Similar to <code>om.core/transact!</code> but just sets a cursor to a new value,
+analagous to <code>reset!</code> for atoms.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">update!</span><span class="w"> </span><span class="n">cursor</span><span class="w"> </span><span class="p">[</span><span class="no">:text</span><span class="p">]</span><span class="w"> </span><span class="s">"Changed this!"</span><span class="p">)</span><span class="w">
+</span></code></pre></div><h3><a class="anchor" name="path"></a>path <a class="hash-link" href="#path">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="nb">path</span><span class="w">
+  </span><span class="p">([</span><span class="n">cursor</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">))</span><span class="w">
+</span></code></pre></div><h3><a class="anchor" name="state"></a>state <a class="hash-link" href="#state">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">state</span><span class="w">
+  </span><span class="p">([</span><span class="n">cursor</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">))</span><span class="w">
+</span></code></pre></div><h3><a class="anchor" name="value"></a>value <a class="hash-link" href="#value">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">value</span><span class="w">
+  </span><span class="p">([</span><span class="n">cursor</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">))</span><span class="w">
+</span></code></pre></div><h3><a class="anchor" name="get-node"></a>get-node <a class="hash-link" href="#get-node">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">get-node</span><span class="w">
+  </span><span class="p">([</span><span class="n">owner</span><span class="w"> </span><span class="nb">ref</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="p">([</span><span class="n">owner</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p><code>owner</code> is the backing Om component. <code>ref</code> is a JavaScript String that
+references a DOM node. This functionality is identical to the
+<a href="http://facebook.github.io/react/docs/component-api.html#getdomnode"><code>ReactComponent.getDOMNode</code></a> in React.</p>
+<h3><a class="anchor" name="set-state"></a>set-state! <a class="hash-link" href="#set-state">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">set-state!</span><span class="w">
+  </span><span class="p">([</span><span class="n">owner</span><span class="w"> </span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="p">([</span><span class="n">owner</span><span class="w"> </span><span class="n">korks</span><span class="w"> </span><span class="n">v</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p>Sets component local state. <code>owner</code> is the backing Om
+component. <code>korks</code> is an optional key or sequence of keys. <code>v</code> is the value to
+set. Will trigger an Om re-render.</p>
+<h3><a class="anchor" name="update-state"></a>update-state! <a class="hash-link" href="#update-state">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">update-state!</span><span class="w"> 
+  </span><span class="p">([</span><span class="n">owner</span><span class="w"> </span><span class="n">f</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="p">([</span><span class="n">owner</span><span class="w"> </span><span class="n">korks</span><span class="w"> </span><span class="n">f</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p>Takes a pure owning component, an optional sequential list of keys and a function to transition the state of the component. Conceptually analogous to React <code>setState</code>. Will schedule an Om re-render.</p>
+<h3><a class="anchor" name="refresh"></a>refresh! <a class="hash-link" href="#refresh">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">refresh!</span><span class="w"> </span><span class="p">[</span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="n">...</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p>Utility to re-render an owner. Delegates to <code>update-state!</code>.</p>
+<h3><a class="anchor" name="get-render-state"></a>get-render-state <a class="hash-link" href="#get-render-state">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">get-render-state</span><span class="w">
+  </span><span class="p">([</span><span class="n">owner</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">)</span><span class="w">
+  </span><span class="p">([</span><span class="n">owner</span><span class="w"> </span><span class="n">korks</span><span class="p">]</span><span class="w"> </span><span class="n">...</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p>Returns rendered component local state. <code>owner</code> is the backing Om
+component. <code>korks</code> is an optional key or sequences of keys. Similar to
+<code>om.core/get-state</code> except always returns the rendered state. Useful
+for detecting state transitions.</p>
+<h3><a class="anchor" name="detach-root"></a>detach-root <a class="hash-link" href="#detach-root">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">detach-root</span><span class="w"> </span><span class="p">[</span><span class="n">target</span><span class="p">]</span><span class="w">
+  </span><span class="n">...</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p>Given a DOM target, remove its render loop if one exists.</p>
+<h3><a class="anchor" name="root-cursor"></a>root-cursor <a class="hash-link" href="#root-cursor">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">root-cursor</span><span class="w"> </span><span class="p">[</span><span class="n">atom</span><span class="p">]</span><span class="w">
+  </span><span class="n">...</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p>Given an application state atom, return a root cursor for it.</p>
+<h3><a class="anchor" name="ref-cursor"></a>ref-cursor <a class="hash-link" href="#ref-cursor">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">ref-cursor</span><span class="w"> </span><span class="p">[</span><span class="n">cursor</span><span class="p">]</span><span class="w">
+  </span><span class="n">...</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p>Given a cursor, return a reference cursor that inherits all of the
+properties and methods of the cursor. Reference cursors may be
+observed via <code>om.core/observe</code>.</p>
+<h3><a class="anchor" name="observe"></a>observe <a class="hash-link" href="#observe">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">observe</span><span class="w"> </span><span class="p">[</span><span class="n">owner</span><span class="w"> </span><span class="nb">ref</span><span class="p">]</span><span class="w">
+  </span><span class="n">...</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p>Given a component and a reference cursor, have the component observe
+the reference cursor for any data changes.  Evaluates to the given reference cursor.</p>
+<h2><a class="anchor" name="macros"></a>Macros <a class="hash-link" href="#macros">#</a></h2><h3><a class="anchor" name="component"></a>component <a class="hash-link" href="#component">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defmacro</span><span class="w"> </span><span class="n">component</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="w"> </span><span class="n">body</span><span class="p">]</span><span class="w">
+  </span><span class="n">...</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p>Sugar over <code>reify</code> for quickly putting together components that
+only need to implement <code>om.core/IRender</code> and don&#39;t need access to
+the owner argument.</p>
+<h1><a class="anchor" name="om.dom"></a>om.dom <a class="hash-link" href="#om.dom">#</a></h1>
+<p>The dom functions map directly to the DOM api presented by React. For
+example <code>React.DOM.div</code> becomes <code>om.dom/div</code>. The arguments are exactly
+the same as React, the first argument is <code>props</code>, all subsequent
+arguments are <code>children</code>.</p>
+<h3><a class="anchor" name="props"></a>Props <a class="hash-link" href="#props">#</a></h3>
+<p>For a list of supported <code>props</code> see <a href="http://facebook.github.io/react/docs/tags-and-attributes.html#html-attributes">React&#39;s supported DOM attributes</a> and <a href="http://facebook.github.io/react/docs/special-non-dom-attributes.html">React&#39;s special attributes</a>. As an example of the special attributes, the following code will create a <code>div</code> component that contains raw HTML:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">om.dom/div</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:dangerouslySetInnerHTML</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:__html</span><span class="w"> </span><span class="s">"&lt;b&gt;Bold!&lt;/b&gt;"</span><span class="p">}}</span><span class="w">
+            </span><span class="n">nil</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p>Be careful! The attribute is well-named: this is potentially dangerous and should be used with caution.</p>
+<h3><a class="anchor" name="render-to-str"></a>render-to-str <a class="hash-link" href="#render-to-str">#</a></h3><div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">render-to-str</span><span class="w"> </span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w">
+  </span><span class="n">...</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p>Equivalent to <a href="http://facebook.github.io/react/docs/top-level-api.html#react.rendercomponenttostring"><code>React.renderComponentToString</code></a>. For example:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">dom/render-to-str</span><span class="w"> </span><span class="p">(</span><span class="nf">om/build</span><span class="w"> </span><span class="n">some-widget</span><span class="w"> </span><span class="n">data</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+
+    <div class="docs-prevnext">
+      
+      
+    </div>
+  </div>
+</section>
+
+</body>
+
+</html>
