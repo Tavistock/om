@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Basic Tutorial | Om</title>
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="/css/om.css">
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css">
+</head>
+
+<body>
+  <div class="container">
+
+  <div class="nav-main">
+    <div class="wrap">
+      <a class="nav-home" href="/index.html">
+        <img class="nav-logo" src="/img/logo.svg" width="36" height="36">
+        Om
+      </a>
+      <ul class="nav-site nav-site-internal">
+        <li><a href="/docs/index.html" class="active">Docs</a></li>
+        <li><a href="community.html">Community</a></li>
+      </ul>
+
+      <ul class="nav-site nav-site-external">
+        <li><a href="https://github.com/omcljs/om">GitHub</a>
+      </ul>
+    </div>
+  </div>
+
+  
+
+  <section class="content wrap documentationContent">
+  
+<div class="nav-docs">
+  <!-- Docs Nav -->
+  
+    <div class="nav-docs-section">
+      <h3>Quick Start</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Quick Start Title</h4>
+          
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+    <div class="nav-docs-section">
+      <h3>Om</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Tutorials</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/om/basic-tutorial.html" class="active">Basic Tutorial</a>
+                </li>
+              
+                <li>
+                  <a href="/om/intermediate-tutorial.html">Intermediate Tutorial</a>
+                </li>
+              
+                <li>
+                  <a href="/om/advance-tutorial.html">Advance Tutorial</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+        <li>
+          
+            <h4>Documentation</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/om/documentation.html">Documentation</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+        <li>
+          
+            <h4>Other</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/om/testing.html">Testing</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+    <div class="nav-docs-section">
+      <h3>Om.next</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Guide</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/guide-name.html">Guide Title</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+        <li>
+          
+            <h4>Reference</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/reference-name.html">Reference Title</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+    <div class="nav-docs-section">
+      <h3>Resources</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Videos</h4>
+          
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+</div>
+
+
+  <div class="inner-content">
+    <h1>
+      Basic Tutorial
+      <a class="edit-page-link" href="https://github.com/omcljs/om/tree/master/docs/docs/om/Basic-Tutorial.md" target="_blank">Edit on GitHub</a>
+    </h1>
+    <div class="subHeader"></div>
+
+    <p>This tutorial assumes familiarity with Clojure or ClojureScript. If
+you are not familiar with them, we recommend going through the
+<a href="http://github.com/swannodette/lt-cljs-tutorial">ClojureScript tutorial for Light Table</a>
+first. If you are entirely new to Om, you may also benefit from a quick look through the <a href="https://github.com/omcljs/om/wiki/Conceptual-overview">Conceptual overview</a>.</p>
+
+<p>We will use
+<a href="https://github.com/bhauman/lein-figwheel">Figwheel</a> to
+easily get an interactive environment for ClojureScript and Om.
+Figwheel does two things:</p>
+
+<ul>
+<li>It automatically compiles and reloads your ClojureScript and CSS in
+the browser as soon as you save the file, no need to refresh.</li>
+<li>It connects the browser to a REPL so you can try expressions and
+manipulate your running app.</li>
+</ul>
+
+<p>To get started, install <a href="http://leiningen.org">Leiningen</a>. Then
+navigate in a terminal to the directory where you would like the tutorial
+and run the following command:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">lein new figwheel om-tut -- --om
+</code></pre></div>
+<p>This will create a project including Om and Figwheel in a  folder
+called <code>om-tut</code>. <code>cd</code> into it and run the following command:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">lein figwheel
+</code></pre></div>
+<p>It will start auto building the ClojureScript project. The first build
+will take a few seconds. Once the build has succeeded
+open <a href="http://localhost:3449/">localhost:3449</a> in your favorite
+browser (we recommend Google Chrome as it has excellent support for
+source maps). You should see an <code>h1</code> tag with the text content <code>Hello
+World!</code> in it.</p>
+
+<p>Open <code>src/om_tut/core.cljs</code> in your preferred editor. Change the
+<code>:text</code> value of <code>app-state</code> to be something else other than <code>Hello
+World!</code>. Save the file. Refresh your browser and you should see the
+new contents. The reason we need to refresh the browser is because
+<code>app-state</code> is defined with <code>defonce</code>. This is meant to prevent each
+reload from resetting the state.</p>
+
+<p>That&#39;s pretty boring isn&#39;t it? Let&#39;s do some live coding instead.
+Arrange your windows so that you can see both the Chrome window
+and your source code at the same time.</p>
+
+<p>Now change <code>dom/h1</code> to <code>dom/p</code> and watch the browser window. It should
+change without the need for reloading. This changed the behavior of
+the code without affecting <code>app-state</code>. To edit <code>app-state</code> you can
+either refresh the browser to reset it, or manipulate it directly from
+the browser-connected-REPL. In the same terminal window where you
+entered <code>lein figwheel</code> you should see a REPL. If you don&#39;t, try
+refreshing your browser window. An easy way to try the REPL is:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="n">cljs.user&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">js/alert</span><span class="w"> </span><span class="s">"Am I connected?"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p>You should see the alert in your browser. After you click &quot;Ok&quot; in the
+browser, the expression should return <code>nil</code> in the REPL. If you see
+exceptions and error messages, please troubleshoot Figwheel&#39;s Browser
+REPL before proceeding. If everything is working move from the generic
+<code>cljs.user</code> namespace to <code>om-tut.core</code> (where all our code lives) and
+then change the state:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="n">cljs.user=&gt;</span><span class="w"> </span><span class="p">(</span><span class="nb">in-ns</span><span class="w"> </span><span class="ss">'om-tut.core</span><span class="p">)</span><span class="w">
+</span><span class="n">nil</span><span class="w">
+</span><span class="n">om-tut.core=&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">swap!</span><span class="w"> </span><span class="n">app-state</span><span class="w"> </span><span class="nb">assoc</span><span class="w"> </span><span class="no">:text</span><span class="w"> </span><span class="s">"Do it live!"</span><span class="p">)</span><span class="w">
+</span></code></pre></div><h2><a class="anchor" name="om-basics"></a>Om basics <a class="hash-link" href="#om-basics">#</a></h2>
+<p>In Om the application state is held in an <code>atom</code>, the one reference
+type built into ClojureScript. If you change the value of the atom via
+<code>swap!</code> or <code>reset!</code> this will always trigger a re-render of any Om
+roots attached to it (we&#39;ll explain this in a second). You can think
+of this atom as the database of your client side
+application. Everything in the atom should be an associative data
+structure - either a ClojureScript map or indexed sequential data
+structure such as a vector (but not a set). This means you should
+never put lists or lazy sequences into the application state. It&#39;s
+particularly easy to forget this when updating indexed sequences in
+the application state.</p>
+<h3><a class="anchor" name="om.coreroot"></a>om.core/root <a class="hash-link" href="#om.coreroot">#</a></h3>
+<p><code>om.core/root</code> (which is aliased to <code>om/root</code> here), establishes an
+Om rendering loop on a specific element in the DOM. The <code>om.root</code>
+expression in the tutorial at this point looks like this:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">om/root</span><span class="w">
+  </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+      </span><span class="n">om/IRender</span><span class="w">
+      </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/p</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">(</span><span class="no">:text</span><span class="w"> </span><span class="n">data</span><span class="p">)))))</span><span class="w">
+  </span><span class="n">app-state</span><span class="w">
+  </span><span class="p">{</span><span class="no">:target</span><span class="w"> </span><span class="p">(</span><span class="nb">.</span><span class="w"> </span><span class="n">js/document</span><span class="w"> </span><span class="p">(</span><span class="nf">getElementById</span><span class="w"> </span><span class="s">"app"</span><span class="p">))})</span><span class="w">
+</span></code></pre></div>
+<p><code>om.core/root</code> is idempotent; that is, it&#39;s safe to evaluate it
+multiple times (that is why we don&#39;t need <code>defonce</code>). It takes three
+arguments. The first argument is a function that takes the application
+state data and the backing React component, here called <code>owner</code>. This
+function must return an Om component - i.e. a model of the
+<code>om/IRender</code> interface, like <code>om.core/component</code> macro generates. The
+second argument  is the application state atom. The third argument
+is a map; it must contain a <code>:target</code> DOM node key value pair. It also
+takes other interesting options which will be covered later.</p>
+
+<p>There can be multiple roots. Edit <code>resources/public/index.html</code>, replace <code>&lt;div
+id=&quot;app&quot;&gt;&lt;h2&gt;Figwheel..&lt;/h2&gt;&lt;p&gt;Checkout..&lt;/p&gt;&lt;/div&gt;</code> with the following:</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"app0"</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"app1"</span><span class="nt">&gt;&lt;/div&gt;</span>
+</code></pre></div>
+<p>You need to refresh the browser after changing <code>resources/public/index.html</code>
+since Figwheel doesn&#39;t handle HTML reloading. And edit
+<code>src/om_tut/core.cljs</code> replacing the <code>om/root</code> expression
+with the following:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">om/root</span><span class="w">
+  </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">om/component</span><span class="w"> </span><span class="p">(</span><span class="nf">dom/h2</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">(</span><span class="no">:text</span><span class="w"> </span><span class="n">data</span><span class="p">))))</span><span class="w">
+  </span><span class="n">app-state</span><span class="w">
+  </span><span class="p">{</span><span class="no">:target</span><span class="w"> </span><span class="p">(</span><span class="nb">.</span><span class="w"> </span><span class="n">js/document</span><span class="w"> </span><span class="p">(</span><span class="nf">getElementById</span><span class="w"> </span><span class="s">"app0"</span><span class="p">))})</span><span class="w">
+</span></code></pre></div>
+<p>Refresh your browser. You should see just one <code>h2</code> tag on the
+page. Copy and paste the <code>om/root</code> expression and edit the second
+one to look like the following:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">om/root</span><span class="w">
+  </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">om/component</span><span class="w"> </span><span class="p">(</span><span class="nf">dom/h2</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">(</span><span class="no">:text</span><span class="w"> </span><span class="n">data</span><span class="p">))))</span><span class="w">
+  </span><span class="n">app-state</span><span class="w">
+  </span><span class="p">{</span><span class="no">:target</span><span class="w"> </span><span class="p">(</span><span class="nb">.</span><span class="w"> </span><span class="n">js/document</span><span class="w"> </span><span class="p">(</span><span class="nf">getElementById</span><span class="w"> </span><span class="s">"app1"</span><span class="p">))})</span><span class="w"> </span><span class="c1">;; &lt;-- "app0" to "app1"
+</span></code></pre></div>
+<p>You should see the second <code>h2</code> tag magically appear after saving.</p>
+
+<p>Evaluate this in the REPL:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="n">om-tut.core=&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">swap!</span><span class="w"> </span><span class="n">app-state</span><span class="w"> </span><span class="nb">assoc</span><span class="w"> </span><span class="no">:text</span><span class="w"> </span><span class="s">"Multiple roots!"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p>You should see both <code>h2</code> tags update on the fly. Multiple roots are
+fully supported and synchronized to render on the same
+<code>requestAnimationFrame</code>.</p>
+
+<p>Before proceeding remove the <code>&lt;div id=&quot;app1&quot;&gt;&lt;/div&gt;</code> from
+<code>resources/public/index.html</code> and remove the second <code>om/root</code>
+expression. Save and refresh the browser.</p>
+<h2><a class="anchor" name="rendering-a-list-of-things"></a>Rendering a list of things <a class="hash-link" href="#rendering-a-list-of-things">#</a></h2>
+<p>Change the <code>app-state</code> expression to the following and refresh the browser:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defonce</span><span class="w"> </span><span class="n">app-state</span><span class="w"> </span><span class="p">(</span><span class="nf">atom</span><span class="w"> </span><span class="p">{</span><span class="no">:list</span><span class="w"> </span><span class="p">[</span><span class="s">"Lion"</span><span class="w"> </span><span class="s">"Zebra"</span><span class="w"> </span><span class="s">"Buffalo"</span><span class="w"> </span><span class="s">"Antelope"</span><span class="p">]}))</span><span class="w">
+</span></code></pre></div>
+<p>If we didn&#39;t use <code>defonce</code> the state would be restarted each time we change our code because of Figwheel&#39;s code reloading. If we wanted to try new code with the current <code>app-state</code> it would be impossible.</p>
+
+<p>Change the <code>om/root</code> expression to the following and save. Don&#39;t bother refreshing,
+<a href="http://library.stanford.edu/collections/john-mccarthy-papers-0">John McCarthy</a>
+would be pissed! You should see a list of animals now.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">om/root</span><span class="w">
+  </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">om/component</span><span class="w">
+      </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="n">nil</span><span class="w">
+        </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">text</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="n">text</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="no">:list</span><span class="w"> </span><span class="n">data</span><span class="p">)))))</span><span class="w">
+  </span><span class="n">app-state</span><span class="w">
+  </span><span class="p">{</span><span class="no">:target</span><span class="w"> </span><span class="p">(</span><span class="nb">.</span><span class="w"> </span><span class="n">js/document</span><span class="w"> </span><span class="p">(</span><span class="nf">getElementById</span><span class="w"> </span><span class="s">"app0"</span><span class="p">))})</span><span class="w">
+</span></code></pre></div>
+<p>You might have noticed that the first argument to <code>dom/ul</code> and
+<code>dom/li</code> is <code>nil</code>. This argument is how you set DOM attributes. Change
+the <code>om/root</code> expression to the following and save it:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">om/root</span><span class="w">
+  </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">om/component</span><span class="w">
+      </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:className</span><span class="w"> </span><span class="s">"animals"</span><span class="p">}</span><span class="w">
+        </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">text</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="n">text</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="no">:list</span><span class="w"> </span><span class="n">data</span><span class="p">)))))</span><span class="w">
+  </span><span class="n">app-state</span><span class="w">
+  </span><span class="p">{</span><span class="no">:target</span><span class="w"> </span><span class="p">(</span><span class="nb">.</span><span class="w"> </span><span class="n">js/document</span><span class="w"> </span><span class="p">(</span><span class="nf">getElementById</span><span class="w"> </span><span class="s">"app0"</span><span class="p">))})</span><span class="w">
+</span></code></pre></div>
+<p>If you right click on the list in Google Chrome and select <strong>Inspect
+Element</strong> you should see that the <code>ul</code> tag in the DOM does indeed have
+its CSS class attribute set to &quot;animals&quot;.</p>
+
+<p><code>#js {...}</code> and <code>#js [...]</code> is what is referred to as a reader
+literal. ClojureScript supports data literals for JavaScript via
+<code>#js</code>.</p>
+
+<p><code>#js {...}</code> is for JavaScript objects:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:foo</span><span class="w"> </span><span class="s">"bar"</span><span class="p">}</span><span class="w">  </span><span class="c1">;; is equivalent to
+</span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="s">"foo"</span><span class="w"> </span><span class="s">"bar"</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><code>#js [...]</code> is for JavaScript arrays:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w">
+</span></code></pre></div>
+<p>The <code>#js</code> reader literal support is shallow, take note of the
+following:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:foo</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">]}</span><span class="w"> </span><span class="c1">;; a JS object with a persistent vector in it
+</span></code></pre></div><h2><a class="anchor" name="life-without-a-templating-language"></a>Life without a templating language <a class="hash-link" href="#life-without-a-templating-language">#</a></h2>
+<p>In Om you have the full power of the ClojureScript language when building
+your user interface. At the same time, Om leaves the door open for
+alternate syntaxes for describing the DOM if that&#39;s your cup of tea.</p>
+
+<p>Let&#39;s edit our code so we get zebra striping on the list. Let&#39;s add a
+helper function <code>stripe</code> before the <code>om/root</code> expression:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">stripe</span><span class="w"> </span><span class="p">[</span><span class="n">text</span><span class="w"> </span><span class="n">bgc</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">st</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:backgroundColor</span><span class="w"> </span><span class="n">bgc</span><span class="p">}]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:style</span><span class="w"> </span><span class="n">st</span><span class="p">}</span><span class="w"> </span><span class="n">text</span><span class="p">)))</span><span class="w">
+</span></code></pre></div>
+<p>Then change the <code>om/root</code> expression to the following and save:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">om/root</span><span class="w">
+  </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">om/component</span><span class="w">
+      </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:className</span><span class="w"> </span><span class="s">"animals"</span><span class="p">}</span><span class="w">
+        </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="n">stripe</span><span class="w"> </span><span class="p">(</span><span class="no">:list</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">cycle</span><span class="w"> </span><span class="p">[</span><span class="s">"#ff0"</span><span class="w"> </span><span class="s">"#fff"</span><span class="p">])))))</span><span class="w">
+  </span><span class="n">app-state</span><span class="w">
+  </span><span class="p">{</span><span class="no">:target</span><span class="w"> </span><span class="p">(</span><span class="nb">.</span><span class="w"> </span><span class="n">js/document</span><span class="w"> </span><span class="p">(</span><span class="nf">getElementById</span><span class="w"> </span><span class="s">"app0"</span><span class="p">))})</span><span class="w">
+</span></code></pre></div>
+<p>As we can see ClojureScript offers powerful functional tools that put
+most templating languages completely to shame.</p>
+<h2><a class="anchor" name="your-first-om-component"></a>Your first Om component <a class="hash-link" href="#your-first-om-component">#</a></h2>
+<p>Change <code>&lt;div id=&quot;app0&quot;&gt;&lt;/div&gt;</code> to <code>&lt;div id=&quot;contacts&quot;&gt;&lt;/div&gt;</code>, remove
+<code>stripe</code> from <code>src/om_tut/core.cljs</code> and save.</p>
+
+<p>Change the <code>om/root</code> expression to the following, don&#39;t save it
+yet since we haven&#39;t defined <code>contacts-view</code>.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">om/root</span><span class="w"> </span><span class="n">contacts-view</span><span class="w"> </span><span class="n">app-state</span><span class="w">
+  </span><span class="p">{</span><span class="no">:target</span><span class="w"> </span><span class="p">(</span><span class="nb">.</span><span class="w"> </span><span class="n">js/document</span><span class="w"> </span><span class="p">(</span><span class="nf">getElementById</span><span class="w"> </span><span class="s">"contacts"</span><span class="p">))})</span><span class="w">
+</span></code></pre></div>
+<p>Let&#39;s edit <code>app-state</code> so it looks like this:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defonce</span><span class="w"> </span><span class="n">app-state</span><span class="w">
+  </span><span class="p">(</span><span class="nf">atom</span><span class="w">
+    </span><span class="p">{</span><span class="no">:contacts</span><span class="w">
+     </span><span class="p">[{</span><span class="no">:first</span><span class="w"> </span><span class="s">"Ben"</span><span class="w"> </span><span class="no">:last</span><span class="w"> </span><span class="s">"Bitdiddle"</span><span class="w"> </span><span class="no">:email</span><span class="w"> </span><span class="s">"benb@mit.edu"</span><span class="p">}</span><span class="w">
+      </span><span class="p">{</span><span class="no">:first</span><span class="w"> </span><span class="s">"Alyssa"</span><span class="w"> </span><span class="no">:middle-initial</span><span class="w"> </span><span class="s">"P"</span><span class="w"> </span><span class="no">:last</span><span class="w"> </span><span class="s">"Hacker"</span><span class="w"> </span><span class="no">:email</span><span class="w"> </span><span class="s">"aphacker@mit.edu"</span><span class="p">}</span><span class="w">
+      </span><span class="p">{</span><span class="no">:first</span><span class="w"> </span><span class="s">"Eva"</span><span class="w"> </span><span class="no">:middle</span><span class="w"> </span><span class="s">"Lu"</span><span class="w"> </span><span class="no">:last</span><span class="w"> </span><span class="s">"Ator"</span><span class="w"> </span><span class="no">:email</span><span class="w"> </span><span class="s">"eval@mit.edu"</span><span class="p">}</span><span class="w">
+      </span><span class="p">{</span><span class="no">:first</span><span class="w"> </span><span class="s">"Louis"</span><span class="w"> </span><span class="no">:last</span><span class="w"> </span><span class="s">"Reasoner"</span><span class="w"> </span><span class="no">:email</span><span class="w"> </span><span class="s">"prolog@mit.edu"</span><span class="p">}</span><span class="w">
+      </span><span class="p">{</span><span class="no">:first</span><span class="w"> </span><span class="s">"Cy"</span><span class="w"> </span><span class="no">:middle-initial</span><span class="w"> </span><span class="s">"D"</span><span class="w"> </span><span class="no">:last</span><span class="w"> </span><span class="s">"Effect"</span><span class="w"> </span><span class="no">:email</span><span class="w"> </span><span class="s">"bugs@mit.edu"</span><span class="p">}</span><span class="w">
+      </span><span class="p">{</span><span class="no">:first</span><span class="w"> </span><span class="s">"Lem"</span><span class="w"> </span><span class="no">:middle-initial</span><span class="w"> </span><span class="s">"E"</span><span class="w"> </span><span class="no">:last</span><span class="w"> </span><span class="s">"Tweakit"</span><span class="w"> </span><span class="no">:email</span><span class="w"> </span><span class="s">"morebugs@mit.edu"</span><span class="p">}]}))</span><span class="w">
+</span></code></pre></div>
+<p>After <code>app-state</code> let&#39;s add the following code:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">contacts-view</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/h2</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Contact list"</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">om/build-all</span><span class="w"> </span><span class="n">contact-view</span><span class="w"> </span><span class="p">(</span><span class="no">:contacts</span><span class="w"> </span><span class="n">data</span><span class="p">)))))))</span><span class="w">
+</span></code></pre></div>
+<p>In order to build an Om component we must use <code>om.core/build</code> for a single
+component and <code>om.core/build-all</code> to build many components. In this case
+we want to display a contact list so we use a vector of contacts as the
+cursor. <code>contacts-view</code> returns a <code>div</code> with a <code>h2</code> and <code>ul</code> tag in it. We
+want to render several <code>li</code> elements so we call <code>apply</code> on <code>dom/ul</code>. If
+you wanted to render a single component, the cursor would probably not be
+a vector and you would just <code>om.core/build</code> the component without
+<code>apply</code>ing it to a root node.</p>
+
+<p>Let&#39;s write <code>contact-view</code> now and add it after <code>contacts-view</code>.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">contact-view</span><span class="w"> </span><span class="p">[</span><span class="n">contact</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">(</span><span class="nf">display-name</span><span class="w"> </span><span class="n">contact</span><span class="p">)))))</span><span class="w">
+</span></code></pre></div>
+<p>Now save the file and reload the browser. You&#39;ll see no changes and
+some errors in the the browser console or in the same screen (look for
+the yellow message in the bottom). Figwheel refuses to load code that
+has warnings. Go to the console:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">WARNING: Use of undeclared Var om-tut.core/contact-view at line 24 src/om_tut/core.cljs
+WARNING: Use of undeclared Var om-tut.core/display-name at line 30 src/om_tut/core.cljs
+</code></pre></div>
+<p>It warns that <code>contact-view</code> is undefined, because it&#39;s defined <em>after</em> <code>contacts-view</code>.</p>
+
+<p>So let&#39;s move it before and save it again to check that the warning is gone and we only have the warning about the actually missing <code>display-name</code> function.</p>
+
+<p>So now for <code>display-name</code>. Let&#39;s add it <em>before</em> <code>contact-view</code>.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">display-name</span><span class="w"> </span><span class="p">[{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="nb">first</span><span class="w"> </span><span class="nb">last</span><span class="p">]</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">contact</span><span class="p">}]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="nb">last</span><span class="w"> </span><span class="s">", "</span><span class="w"> </span><span class="nb">first</span><span class="w"> </span><span class="p">(</span><span class="nf">middle-name</span><span class="w"> </span><span class="n">contact</span><span class="p">)))</span><span class="w">
+</span></code></pre></div>
+<p>Here we get a taste of map destructuring. Pretty handy. Finally let&#39;s
+write the <code>middle-name</code> helper, it should come before <code>display-name</code>
+in your file.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">middle-name</span><span class="w"> </span><span class="p">[{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">middle</span><span class="w"> </span><span class="n">middle-initial</span><span class="p">]}]</span><span class="w">
+  </span><span class="p">(</span><span class="k">cond</span><span class="w">
+    </span><span class="n">middle</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="s">" "</span><span class="w"> </span><span class="n">middle</span><span class="p">)</span><span class="w">
+    </span><span class="n">middle-initial</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="s">" "</span><span class="w"> </span><span class="n">middle-initial</span><span class="w"> </span><span class="s">"."</span><span class="p">)))</span><span class="w">
+</span></code></pre></div>
+<p>Again some map destructuring.</p>
+
+<p>After you save you should see the list of contacts.</p>
+<h2><a class="anchor" name="enhancing-your-first-om-component"></a>Enhancing your first Om component <a class="hash-link" href="#enhancing-your-first-om-component">#</a></h2>
+<p>Let&#39;s try deleting contacts. Change <code>contact-view</code> to the following:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">contact-view</span><span class="w"> </span><span class="p">[</span><span class="n">contact</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/span</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">(</span><span class="nf">display-name</span><span class="w"> </span><span class="n">contact</span><span class="p">))</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/button</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Delete"</span><span class="p">)))))</span><span class="w">
+</span></code></pre></div>
+<p>Save it. You should see delete
+buttons now, however clicking on them won&#39;t do anything.</p>
+
+<p>Contacts don&#39;t need to be able to delete themselves, however they should
+be able to communicate to some entity that does have that power.</p>
+<h2><a class="anchor" name="intercomponent-communication"></a>Intercomponent communication <a class="hash-link" href="#intercomponent-communication">#</a></h2>
+<p>For communication between components we will use core.async
+channels. Change your namespace form to the following:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="o">^</span><span class="no">:figwheel-always</span><span class="w"> </span><span class="n">om-tut.core</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require-macros</span><span class="w"> </span><span class="p">[</span><span class="n">cljs.core.async.macros</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">go</span><span class="p">]])</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">om.core</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">om</span><span class="w"> </span><span class="no">:include-macros</span><span class="w"> </span><span class="n">true</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">om.dom</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">dom</span><span class="w"> </span><span class="no">:include-macros</span><span class="w"> </span><span class="n">true</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">cljs.core.async</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">put!</span><span class="w"> </span><span class="n">chan</span><span class="w"> </span><span class="n">&lt;!</span><span class="p">]]))</span><span class="w">
+</span></code></pre></div>
+<p>Save your file and refresh the browser. (Note: For this to work, there
+is already the dependency <code>[org.clojure/core.async &quot;x.x.x&quot;]</code>
+in your <code>project.clj</code>. When adding this manually to future projects you will
+need to stop/restart the <code>lein figwheel</code> process). Change <code>contact-view</code>
+to the following:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">contact-view</span><span class="w"> </span><span class="p">[</span><span class="n">contact</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRenderState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render-state</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="w"> </span><span class="p">{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">delete</span><span class="p">]}]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/span</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">(</span><span class="nf">display-name</span><span class="w"> </span><span class="n">contact</span><span class="p">))</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/button</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:onClick</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">put!</span><span class="w"> </span><span class="n">delete</span><span class="w"> </span><span class="err">@</span><span class="n">contact</span><span class="p">))}</span><span class="w"> </span><span class="s">"Delete"</span><span class="p">)))))</span><span class="w">
+</span></code></pre></div>
+<p>We&#39;ve changed <code>om/IRender</code> to <code>om/IRenderState</code>. This is because we
+will receive the delete notification channel as part of our component
+state. We&#39;ve also added a <code>onClick</code> handler to the button which writes
+the contact onto the channel. This is actually a bug as we will soon
+see.</p>
+
+<p>Change <code>contacts-view</code> to the following. It&#39;s a big change, don&#39;t
+worry we&#39;ll walk through all of it.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">contacts-view</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IInitState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">init-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">{</span><span class="no">:delete</span><span class="w"> </span><span class="p">(</span><span class="nf">chan</span><span class="p">)})</span><span class="w">
+    </span><span class="n">om/IWillMount</span><span class="w">
+    </span><span class="p">(</span><span class="nf">will-mount</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">delete</span><span class="w"> </span><span class="p">(</span><span class="nf">om/get-state</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:delete</span><span class="p">)]</span><span class="w">
+        </span><span class="p">(</span><span class="nf">go</span><span class="w"> </span><span class="p">(</span><span class="nb">loop</span><span class="w"> </span><span class="p">[]</span><span class="w">
+          </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">contact</span><span class="w"> </span><span class="p">(</span><span class="nf">&lt;!</span><span class="w"> </span><span class="n">delete</span><span class="p">)]</span><span class="w">
+            </span><span class="p">(</span><span class="nf">om/transact!</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="no">:contacts</span><span class="w">
+              </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">xs</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">vec</span><span class="w"> </span><span class="p">(</span><span class="nb">remove</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">contact</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w"> </span><span class="n">xs</span><span class="p">))))</span><span class="w">
+            </span><span class="p">(</span><span class="nf">recur</span><span class="p">))))))</span><span class="w">
+    </span><span class="n">om/IRenderState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render-state</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="w"> </span><span class="p">{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">delete</span><span class="p">]}]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/h2</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Contact list"</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">om/build-all</span><span class="w"> </span><span class="n">contact-view</span><span class="w"> </span><span class="p">(</span><span class="no">:contacts</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w">
+            </span><span class="p">{</span><span class="no">:init-state</span><span class="w"> </span><span class="p">{</span><span class="no">:delete</span><span class="w"> </span><span class="n">delete</span><span class="p">}}))))))</span><span class="w">
+</span></code></pre></div>
+<p><strong>Reminder:</strong> Notice that we&#39;re using <code>vec</code> to transform the result of <code>remove</code> (a lazy sequence) back into a vector, consistent with our aforementioned rule that state should only consist of associative data structures like maps and vectors.</p>
+
+<p>First we set the initial state by implementing <code>om/IInitState</code>. We
+just allocate a core.async channel. It&#39;s extremely important we don&#39;t
+do this in a <code>let</code> binding around <code>reify</code>. This is a common
+mistake. Remember the <code>contacts-view</code> function will potentially be
+invoked many, many times. We also change <code>om/IRender</code> to
+<code>om/IRenderState</code> as we want to get the delete channel so we can pass
+it down.</p>
+
+<p>We then implement <code>om/IWillMount</code> so that we can establish a go loop
+that will listen for events from the children contact views. If we get
+a delete event, we remove the associated contact from the application state
+with <code>om.core/transact!</code>. You should now be able to delete people from the
+contact list.</p>
+<h2><a class="anchor" name="adding-contacts"></a>Adding Contacts <a class="hash-link" href="#adding-contacts">#</a></h2>
+<p>Let&#39;s modify our application so we can add new contacts. Change the
+top namespace form to the following, restart <code>lein figwheel</code>, and refresh your browser:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="o">^</span><span class="no">:figwheel-always</span><span class="w"> </span><span class="n">om-tut.core</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require-macros</span><span class="w"> </span><span class="p">[</span><span class="n">cljs.core.async.macros</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">go</span><span class="p">]])</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">om.core</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">om</span><span class="w"> </span><span class="no">:include-macros</span><span class="w"> </span><span class="n">true</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">om.dom</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">dom</span><span class="w"> </span><span class="no">:include-macros</span><span class="w"> </span><span class="n">true</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">cljs.core.async</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">put!</span><span class="w"> </span><span class="n">chan</span><span class="w"> </span><span class="n">&lt;!</span><span class="p">]]</span><span class="w">
+            </span><span class="p">[</span><span class="n">clojure.string</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">string</span><span class="p">]))</span><span class="w">
+</span></code></pre></div>
+<p>Let&#39;s add a new function called <code>parse-contact</code> and save it.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">parse-contact</span><span class="w"> </span><span class="p">[</span><span class="n">contact-str</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[[</span><span class="nb">first</span><span class="w"> </span><span class="n">middle</span><span class="w"> </span><span class="nb">last</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">parts</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">string/split</span><span class="w"> </span><span class="n">contact-str</span><span class="w"> </span><span class="o">#</span><span class="s">"\s+"</span><span class="p">)</span><span class="w">
+        </span><span class="p">[</span><span class="nb">first</span><span class="w"> </span><span class="nb">last</span><span class="w"> </span><span class="n">middle</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">nil?</span><span class="w"> </span><span class="nb">last</span><span class="p">)</span><span class="w"> </span><span class="p">[</span><span class="nb">first</span><span class="w"> </span><span class="n">middle</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="nb">first</span><span class="w"> </span><span class="nb">last</span><span class="w"> </span><span class="n">middle</span><span class="p">])</span><span class="w">
+        </span><span class="n">middle</span><span class="w"> </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="n">middle</span><span class="w"> </span><span class="p">(</span><span class="nf">string/replace</span><span class="w"> </span><span class="n">middle</span><span class="w"> </span><span class="s">"."</span><span class="w"> </span><span class="s">""</span><span class="p">))</span><span class="w">
+        </span><span class="n">c</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">middle</span><span class="w"> </span><span class="p">(</span><span class="nb">count</span><span class="w"> </span><span class="n">middle</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span><span class="p">)]</span><span class="w">
+    </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="p">(</span><span class="nb">count</span><span class="w"> </span><span class="n">parts</span><span class="p">)</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w">
+      </span><span class="p">(</span><span class="nf">cond-&gt;</span><span class="w"> </span><span class="p">{</span><span class="no">:first</span><span class="w"> </span><span class="nb">first</span><span class="w"> </span><span class="no">:last</span><span class="w"> </span><span class="nb">last</span><span class="p">}</span><span class="w">
+        </span><span class="p">(</span><span class="nb">==</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">assoc</span><span class="w"> </span><span class="no">:middle-initial</span><span class="w"> </span><span class="n">middle</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nb">&gt;=</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">assoc</span><span class="w"> </span><span class="no">:middle</span><span class="w"> </span><span class="n">middle</span><span class="p">)))))</span><span class="w">
+</span></code></pre></div>
+<p>There are of course many ways to write <code>parse-contact</code> and this is not
+particularly the best way, however it illustrates many common
+idioms. If you&#39;re not experienced with Clojure or ClojureScript it&#39;s
+worth taking the time to understand it before proceeding.</p>
+
+<p>Try it on some input!</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nb">in-ns</span><span class="w"> </span><span class="ss">'om-tut.core</span><span class="p">)</span><span class="w">
+</span><span class="p">(</span><span class="nf">parse-contact</span><span class="w"> </span><span class="s">"Gerald J. Sussman"</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p>If Figwheel throws a ReferenceError with the message <code>clojure is not
+defined</code> or <code>string is not defined</code>, shut down the REPL. Then enter the command:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">lein clean
+</code></pre></div>
+<p>... restarting Figwheel and refreshing the browser will clear the problem.</p>
+
+<p>Once you&#39;ve seen that it basically works, let&#39;s write <code>add-contact</code>. It
+should look like the following:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">add-contact</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">new-contact</span><span class="w"> </span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">om/get-node</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="s">"new-contact"</span><span class="p">)</span><span class="w">
+                        </span><span class="n">.-value</span><span class="w">
+                        </span><span class="n">parse-contact</span><span class="p">)]</span><span class="w">
+    </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="n">new-contact</span><span class="w">
+      </span><span class="p">(</span><span class="nf">om/transact!</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="no">:contacts</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">conj</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="n">new-contact</span><span class="p">)))))</span><span class="w">
+</span></code></pre></div>
+<p>We need to use <code>om.core/get-node</code> so that we can extract the value
+from the text field. We&#39;ll see how we set this up, your contacts view
+should look like the following:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">contacts-view</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IInitState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">init-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">{</span><span class="no">:delete</span><span class="w"> </span><span class="p">(</span><span class="nf">chan</span><span class="p">)})</span><span class="w">
+    </span><span class="n">om/IWillMount</span><span class="w">
+    </span><span class="p">(</span><span class="nf">will-mount</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">delete</span><span class="w"> </span><span class="p">(</span><span class="nf">om/get-state</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:delete</span><span class="p">)]</span><span class="w">
+        </span><span class="p">(</span><span class="nf">go</span><span class="w"> </span><span class="p">(</span><span class="nb">loop</span><span class="w"> </span><span class="p">[]</span><span class="w">
+              </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">contact</span><span class="w"> </span><span class="p">(</span><span class="nf">&lt;!</span><span class="w"> </span><span class="n">delete</span><span class="p">)]</span><span class="w">
+                </span><span class="p">(</span><span class="nf">om/transact!</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="no">:contacts</span><span class="w">
+                  </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">xs</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">vec</span><span class="w"> </span><span class="p">(</span><span class="nb">remove</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">contact</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w"> </span><span class="n">xs</span><span class="p">))))</span><span class="w">
+                </span><span class="p">(</span><span class="nf">recur</span><span class="p">))))))</span><span class="w">
+    </span><span class="n">om/IRenderState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render-state</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="w"> </span><span class="n">state</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/h2</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Contact list"</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">om/build-all</span><span class="w"> </span><span class="n">contact-view</span><span class="w"> </span><span class="p">(</span><span class="no">:contacts</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w">
+            </span><span class="p">{</span><span class="no">:init-state</span><span class="w"> </span><span class="n">state</span><span class="p">}))</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/input</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:type</span><span class="w"> </span><span class="s">"text"</span><span class="w"> </span><span class="no">:ref</span><span class="w"> </span><span class="s">"new-contact"</span><span class="p">})</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/button</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:onClick</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">add-contact</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">)}</span><span class="w"> </span><span class="s">"Add contact"</span><span class="p">))))))</span><span class="w">
+</span></code></pre></div>
+<p>Notice that the input field specified <code>:ref</code>, this is a feature of
+React for the few cases where you need direct access to a DOM node.</p>
+
+<p>Save the file. You should now be able to add contacts as long as you
+provide at least a first and last name.</p>
+
+<p>This is a lot of information. As a challenge I recommend trying to
+clear the text field when a real contact has been added. This is
+harder than it looks so don&#39;t get discouraged. If you spend more than
+15, 20 minutes on it feel free to proceed to the next section and
+we&#39;ll show how to do it.</p>
+<h2><a class="anchor" name="dealing-with-text-input-fields"></a>Dealing with text input fields <a class="hash-link" href="#dealing-with-text-input-fields">#</a></h2>
+<p>React&#39;s declarative model, and thus Om&#39;s, makes dealing with input
+both a little more challenging, but also more flexible. The &quot;easiest&quot;
+way to clear the text field would be by changing <code>add-contact</code> to
+the following:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">add-contact</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">input</span><span class="w"> </span><span class="p">(</span><span class="nf">om/get-node</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="s">"new-contact"</span><span class="p">)</span><span class="w">
+        </span><span class="n">new-contact</span><span class="w"> </span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">.-value</span><span class="w"> </span><span class="n">parse-contact</span><span class="p">)]</span><span class="w">
+    </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="n">new-contact</span><span class="w">
+      </span><span class="p">(</span><span class="nf">om/transact!</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="no">:contacts</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">conj</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="n">new-contact</span><span class="p">))</span><span class="w">
+      </span><span class="p">(</span><span class="nf">set!</span><span class="w"> </span><span class="p">(</span><span class="nf">.-value</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="s">""</span><span class="p">))))</span><span class="w">
+</span></code></pre></div>
+<p>This works great, but any time you find yourself leaning heavily on
+refs it&#39;s probably worth stepping back and considering whether the
+same thing could be accomplished in a more declarative manner.</p>
+
+<p>Since <code>contacts-view</code> &quot;owns&quot; the text field we should consider making
+its value a part of <code>contacts-view</code>&#39;s local state. Let&#39;s change
+<code>contacts-view</code> to the following and save it:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">contacts-view</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IInitState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">init-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">{</span><span class="no">:delete</span><span class="w"> </span><span class="p">(</span><span class="nf">chan</span><span class="p">)</span><span class="w">
+       </span><span class="no">:text</span><span class="w"> </span><span class="s">""</span><span class="p">})</span><span class="w">
+    </span><span class="n">om/IWillMount</span><span class="w">
+    </span><span class="p">(</span><span class="nf">will-mount</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">delete</span><span class="w"> </span><span class="p">(</span><span class="nf">om/get-state</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:delete</span><span class="p">)]</span><span class="w">
+        </span><span class="p">(</span><span class="nf">go</span><span class="w"> </span><span class="p">(</span><span class="nb">loop</span><span class="w"> </span><span class="p">[]</span><span class="w">
+              </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">contact</span><span class="w"> </span><span class="p">(</span><span class="nf">&lt;!</span><span class="w"> </span><span class="n">delete</span><span class="p">)]</span><span class="w">
+                </span><span class="p">(</span><span class="nf">om/transact!</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="no">:contacts</span><span class="w">
+                  </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">xs</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">vec</span><span class="w"> </span><span class="p">(</span><span class="nb">remove</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">contact</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w"> </span><span class="n">xs</span><span class="p">))))</span><span class="w">
+                </span><span class="p">(</span><span class="nf">recur</span><span class="p">))))))</span><span class="w">
+    </span><span class="n">om/IRenderState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render-state</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="w"> </span><span class="n">state</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/h2</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Contact list"</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">om/build-all</span><span class="w"> </span><span class="n">contact-view</span><span class="w"> </span><span class="p">(</span><span class="no">:contacts</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w">
+            </span><span class="p">{</span><span class="no">:init-state</span><span class="w"> </span><span class="n">state</span><span class="p">}))</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/input</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:type</span><span class="w"> </span><span class="s">"text"</span><span class="w"> </span><span class="no">:ref</span><span class="w"> </span><span class="s">"new-contact"</span><span class="w"> </span><span class="no">:value</span><span class="w"> </span><span class="p">(</span><span class="no">:text</span><span class="w"> </span><span class="n">state</span><span class="p">)})</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/button</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:onClick</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">add-contact</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">)}</span><span class="w"> </span><span class="s">"Add contact"</span><span class="p">))))))</span><span class="w">
+</span></code></pre></div>
+<p>Try typing in the text field.</p>
+
+<p>Yikes! You can no longer enter anything. Let&#39;s take a moment to
+consider what&#39;s going on.</p>
+
+<p>We&#39;ve added a new piece of state to <code>contacts-view</code>. Regardless of
+what the user may type we are now setting the value of the input field to
+the value of the <code>:text</code> state property. We need to keep this in sync
+with the user input. Let&#39;s change <code>contacts-view</code> again by adding an
+event listener to watch when the input field changes:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">contacts-view</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IInitState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">init-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">{</span><span class="no">:delete</span><span class="w"> </span><span class="p">(</span><span class="nf">chan</span><span class="p">)</span><span class="w">
+       </span><span class="no">:text</span><span class="w"> </span><span class="s">""</span><span class="p">})</span><span class="w">
+    </span><span class="n">om/IWillMount</span><span class="w">
+    </span><span class="p">(</span><span class="nf">will-mount</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">delete</span><span class="w"> </span><span class="p">(</span><span class="nf">om/get-state</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:delete</span><span class="p">)]</span><span class="w">
+        </span><span class="p">(</span><span class="nf">go</span><span class="w"> </span><span class="p">(</span><span class="nb">loop</span><span class="w"> </span><span class="p">[]</span><span class="w">
+              </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">contact</span><span class="w"> </span><span class="p">(</span><span class="nf">&lt;!</span><span class="w"> </span><span class="n">delete</span><span class="p">)]</span><span class="w">
+                </span><span class="p">(</span><span class="nf">om/transact!</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="no">:contacts</span><span class="w">
+                  </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">xs</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">vec</span><span class="w"> </span><span class="p">(</span><span class="nb">remove</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="n">contact</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w"> </span><span class="n">xs</span><span class="p">))))</span><span class="w">
+                </span><span class="p">(</span><span class="nf">recur</span><span class="p">))))))</span><span class="w">
+    </span><span class="n">om/IRenderState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render-state</span><span class="w"> </span><span class="p">[</span><span class="n">this</span><span class="w"> </span><span class="n">state</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/h2</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Contact list"</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">om/build-all</span><span class="w"> </span><span class="n">contact-view</span><span class="w"> </span><span class="p">(</span><span class="no">:contacts</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w">
+            </span><span class="p">{</span><span class="no">:init-state</span><span class="w"> </span><span class="n">state</span><span class="p">}))</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/input</span><span class="w">
+            </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:type</span><span class="w"> </span><span class="s">"text"</span><span class="w"> </span><span class="no">:ref</span><span class="w"> </span><span class="s">"new-contact"</span><span class="w"> </span><span class="no">:value</span><span class="w"> </span><span class="p">(</span><span class="no">:text</span><span class="w"> </span><span class="n">state</span><span class="p">)</span><span class="w">
+                 </span><span class="no">:onChange</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">handle-change</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="n">state</span><span class="p">)})</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/button</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:onClick</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">add-contact</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">)}</span><span class="w"> </span><span class="s">"Add contact"</span><span class="p">))))))</span><span class="w">
+</span></code></pre></div>
+<p>Before saving that, let&#39;s add <code>handle-change</code> before <code>contacts-view</code>:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">handle-change</span><span class="w"> </span><span class="p">[</span><span class="n">e</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="p">{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">text</span><span class="p">]}]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">om/set-state!</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:text</span><span class="w"> </span><span class="p">(</span><span class="nb">..</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="n">-target</span><span class="w"> </span><span class="n">-value</span><span class="p">)))</span><span class="w">
+</span></code></pre></div>
+<p>Now save all the changes. You should now be able to type in the text
+field again.</p>
+
+<p>Let&#39;s finally add the piece of code that clears the text field. As you see it looks like our first &quot;easy&quot; attempt, except that we&#39;re no longer directly manipulating a ref but we&#39;re changing the state of the app:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">add-contact</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">new-contact</span><span class="w"> </span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">om/get-node</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="s">"new-contact"</span><span class="p">)</span><span class="w">
+                        </span><span class="n">.-value</span><span class="w">
+                        </span><span class="n">parse-contact</span><span class="p">)]</span><span class="w">
+    </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="n">new-contact</span><span class="w">
+      </span><span class="p">(</span><span class="nf">om/transact!</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="no">:contacts</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">conj</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="n">new-contact</span><span class="p">))</span><span class="w">
+      </span><span class="p">(</span><span class="nf">om/set-state!</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:text</span><span class="w"> </span><span class="s">""</span><span class="p">))))</span><span class="w">
+</span></code></pre></div>
+<p>That seemed like a lot of work for little gain ... except we just saw
+we have really fine grained control over user input entry. For example
+a name can&#39;t have a number in it, let&#39;s prevent that now by modifying
+<code>handle-change</code>:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">handle-change</span><span class="w"> </span><span class="p">[</span><span class="n">e</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="p">{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">text</span><span class="p">]}]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">value</span><span class="w"> </span><span class="p">(</span><span class="nb">..</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="n">-target</span><span class="w"> </span><span class="n">-value</span><span class="p">)]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">if-not</span><span class="w"> </span><span class="p">(</span><span class="nb">re-find</span><span class="w"> </span><span class="o">#</span><span class="s">"[0-9]"</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w">
+      </span><span class="p">(</span><span class="nf">om/set-state!</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:text</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w">
+      </span><span class="p">(</span><span class="nf">om/set-state!</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:text</span><span class="w"> </span><span class="n">text</span><span class="p">))))</span><span class="w">
+</span></code></pre></div>
+<p>Now save. You can type names however no change will occur if you
+attempt to enter a number. Pretty slick.</p>
+
+<p><strong>Note</strong>: If you are familiar with React you&#39;ll notice that this is a
+little bit clunkier than in React, here we have to make sure to set
+the state of the text field even if we don&#39;t want it to change. This
+is a side effect of React&#39;s internals clashing a bit with Om&#39;s
+optimization of always rendering on requestAnimationFrame.</p>
+<h2><a class="anchor" name="higher-order-components"></a>Higher Order Components <a class="hash-link" href="#higher-order-components">#</a></h2>
+<p>The most powerful components are those whose sub-components can be
+parameterized. In order to focus on this concept let&#39;s leave aside user
+input and other complications for now. As a challenge you should try
+to re-add these facilities yourself after you&#39;ve worked through this
+section.</p>
+
+<p>Let&#39;s start fresh. Your <code>resources/public/index.html</code> should look like the
+following:</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"css/style.css"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">type=</span><span class="s">"text/css"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"registry"</span><span class="nt">&gt;&lt;/div&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/compiled/om_tut.js"</span> <span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div>
+<p>Your source file should look like the following:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="o">^</span><span class="no">:figwheel-always</span><span class="w"> </span><span class="n">om-tut.core</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">om.core</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">om</span><span class="w"> </span><span class="no">:include-macros</span><span class="w"> </span><span class="n">true</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">om.dom</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">dom</span><span class="w"> </span><span class="no">:include-macros</span><span class="w"> </span><span class="n">true</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">clojure.string</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">string</span><span class="p">]))</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">enable-console-print!</span><span class="p">)</span><span class="w">
+
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">app-state</span><span class="w">
+  </span><span class="p">(</span><span class="nf">atom</span><span class="w">
+    </span><span class="p">{</span><span class="no">:people</span><span class="w">
+     </span><span class="p">[{</span><span class="no">:type</span><span class="w"> </span><span class="no">:student</span><span class="w"> </span><span class="no">:first</span><span class="w"> </span><span class="s">"Ben"</span><span class="w"> </span><span class="no">:last</span><span class="w"> </span><span class="s">"Bitdiddle"</span><span class="w"> </span><span class="no">:email</span><span class="w"> </span><span class="s">"benb@mit.edu"</span><span class="p">}</span><span class="w">
+      </span><span class="p">{</span><span class="no">:type</span><span class="w"> </span><span class="no">:student</span><span class="w"> </span><span class="no">:first</span><span class="w"> </span><span class="s">"Alyssa"</span><span class="w"> </span><span class="no">:middle-initial</span><span class="w"> </span><span class="s">"P"</span><span class="w"> </span><span class="no">:last</span><span class="w"> </span><span class="s">"Hacker"</span><span class="w">
+       </span><span class="no">:email</span><span class="w"> </span><span class="s">"aphacker@mit.edu"</span><span class="p">}</span><span class="w">
+      </span><span class="p">{</span><span class="no">:type</span><span class="w"> </span><span class="no">:professor</span><span class="w"> </span><span class="no">:first</span><span class="w"> </span><span class="s">"Gerald"</span><span class="w"> </span><span class="no">:middle</span><span class="w"> </span><span class="s">"Jay"</span><span class="w"> </span><span class="no">:last</span><span class="w"> </span><span class="s">"Sussman"</span><span class="w">
+       </span><span class="no">:email</span><span class="w"> </span><span class="s">"metacirc@mit.edu"</span><span class="w"> </span><span class="no">:classes</span><span class="w"> </span><span class="p">[</span><span class="no">:6001</span><span class="w"> </span><span class="no">:6946</span><span class="p">]}</span><span class="w">
+      </span><span class="p">{</span><span class="no">:type</span><span class="w"> </span><span class="no">:student</span><span class="w"> </span><span class="no">:first</span><span class="w"> </span><span class="s">"Eva"</span><span class="w"> </span><span class="no">:middle</span><span class="w"> </span><span class="s">"Lu"</span><span class="w"> </span><span class="no">:last</span><span class="w"> </span><span class="s">"Ator"</span><span class="w"> </span><span class="no">:email</span><span class="w"> </span><span class="s">"eval@mit.edu"</span><span class="p">}</span><span class="w">
+      </span><span class="p">{</span><span class="no">:type</span><span class="w"> </span><span class="no">:student</span><span class="w"> </span><span class="no">:first</span><span class="w"> </span><span class="s">"Louis"</span><span class="w"> </span><span class="no">:last</span><span class="w"> </span><span class="s">"Reasoner"</span><span class="w"> </span><span class="no">:email</span><span class="w"> </span><span class="s">"prolog@mit.edu"</span><span class="p">}</span><span class="w">
+      </span><span class="p">{</span><span class="no">:type</span><span class="w"> </span><span class="no">:professor</span><span class="w"> </span><span class="no">:first</span><span class="w"> </span><span class="s">"Hal"</span><span class="w"> </span><span class="no">:last</span><span class="w"> </span><span class="s">"Abelson"</span><span class="w"> </span><span class="no">:email</span><span class="w"> </span><span class="s">"evalapply@mit.edu"</span><span class="w">
+       </span><span class="no">:classes</span><span class="w"> </span><span class="p">[</span><span class="no">:6001</span><span class="p">]}]</span><span class="w">
+     </span><span class="no">:classes</span><span class="w">
+     </span><span class="p">{</span><span class="no">:6001</span><span class="w"> </span><span class="s">"The Structure and Interpretation of Computer Programs"</span><span class="w">
+      </span><span class="no">:6946</span><span class="w"> </span><span class="s">"The Structure and Interpretation of Classical Mechanics"</span><span class="w">
+      </span><span class="no">:1806</span><span class="w"> </span><span class="s">"Linear Algebra"</span><span class="p">}}))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">middle-name</span><span class="w"> </span><span class="p">[{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">middle</span><span class="w"> </span><span class="n">middle-initial</span><span class="p">]}]</span><span class="w">
+  </span><span class="p">(</span><span class="k">cond</span><span class="w">
+    </span><span class="n">middle</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="s">" "</span><span class="w"> </span><span class="n">middle</span><span class="p">)</span><span class="w">
+    </span><span class="n">middle-initial</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="s">" "</span><span class="w"> </span><span class="n">middle-initial</span><span class="w"> </span><span class="s">"."</span><span class="p">)))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">display-name</span><span class="w"> </span><span class="p">[{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="nb">first</span><span class="w"> </span><span class="nb">last</span><span class="p">]</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">contact</span><span class="p">}]</span><span class="w">
+  </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="nb">last</span><span class="w"> </span><span class="s">", "</span><span class="w"> </span><span class="nb">first</span><span class="w"> </span><span class="p">(</span><span class="nf">middle-name</span><span class="w"> </span><span class="n">contact</span><span class="p">)))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">registry-view</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRenderState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="n">state</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/h2</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Registry"</span><span class="p">)))))</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">om/root</span><span class="w"> </span><span class="n">registry-view</span><span class="w"> </span><span class="n">app-state</span><span class="w">
+  </span><span class="p">{</span><span class="no">:target</span><span class="w"> </span><span class="p">(</span><span class="nb">.</span><span class="w"> </span><span class="n">js/document</span><span class="w"> </span><span class="p">(</span><span class="nf">getElementById</span><span class="w"> </span><span class="s">"registry"</span><span class="p">))})</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">on-js-reload</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="c1">;; optionally touch your app-state to force rerendering depending on
+</span><span class="w">  </span><span class="c1">;; your application
+</span><span class="w">  </span><span class="c1">;; (swap! app-state update-in [:__figwheel_counter] inc)
+</span><span class="p">)</span><span class="w">
+</span></code></pre></div>
+<p>Now what we want is for <code>registry-view</code> to render different views for
+different types of people without hardcoding. Here we&#39;ll see how
+multimethods in ClojureScript really shine.</p>
+
+<p>After <code>display-name</code> let&#39;s write the following:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defmulti</span><span class="w"> </span><span class="n">entry-view</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">person</span><span class="w"> </span><span class="n">_</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="no">:type</span><span class="w"> </span><span class="n">person</span><span class="p">)))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defmethod</span><span class="w"> </span><span class="n">entry-view</span><span class="w"> </span><span class="no">:student</span><span class="w">
+  </span><span class="p">[</span><span class="n">person</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">student-view</span><span class="w"> </span><span class="n">person</span><span class="w"> </span><span class="n">owner</span><span class="p">))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defmethod</span><span class="w"> </span><span class="n">entry-view</span><span class="w"> </span><span class="no">:professor</span><span class="w">
+  </span><span class="p">[</span><span class="n">person</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">professor-view</span><span class="w"> </span><span class="n">person</span><span class="w"> </span><span class="n">owner</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p>Don&#39;t save these yet as we haven&#39;t written <code>student-view</code> or
+<code>professor-view</code>. Take a moment to let the idea sink, we&#39;re adding a
+level of indirection so that <code>entry-view</code> can delegate to any other
+view as long as we supplied a <code>defmethod</code> for it!</p>
+
+<p>Let&#39;s write the underlying views now before <code>entry-view</code>:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">student-view</span><span class="w"> </span><span class="p">[</span><span class="n">student</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">(</span><span class="nf">display-name</span><span class="w"> </span><span class="n">student</span><span class="p">)))))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">professor-view</span><span class="w"> </span><span class="p">[</span><span class="n">professor</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">(</span><span class="nf">display-name</span><span class="w"> </span><span class="n">professor</span><span class="p">))</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/label</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Classes"</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="no">:classes</span><span class="w"> </span><span class="n">professor</span><span class="p">)))))))</span><span class="w">
+</span></code></pre></div>
+<p>Finally let&#39;s fix up <code>registry-view</code>. It&#39;s succinct and we&#39;ve kept it
+clean of conditionals.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">registry-view</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:id</span><span class="w"> </span><span class="s">"registry"</span><span class="p">}</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/h2</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Registry"</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">om/build-all</span><span class="w"> </span><span class="n">entry-view</span><span class="w"> </span><span class="p">(</span><span class="nf">people</span><span class="w"> </span><span class="n">data</span><span class="p">)))))))</span><span class="w">
+</span></code></pre></div>
+<p>The only missing bit now is the <code>people</code> function. We want to make
+sure to render professors with their list of actual class
+titles. Before <code>registry-view</code> write the following:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">people</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">-&gt;&gt;</span><span class="w"> </span><span class="n">data</span><span class="w">
+    </span><span class="no">:people</span><span class="w">
+    </span><span class="p">(</span><span class="nf">mapv</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="w">
+            </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="no">:classes</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w">
+              </span><span class="p">(</span><span class="nf">update-in</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="p">[</span><span class="no">:classes</span><span class="p">]</span><span class="w">
+                </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">cs</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">mapv</span><span class="w"> </span><span class="p">(</span><span class="no">:classes</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="n">cs</span><span class="p">)))</span><span class="w">
+               </span><span class="n">x</span><span class="p">)))))</span><span class="w">
+</span></code></pre></div>
+<p>Save everything and you should see the results.</p>
+
+<p>Hopefully the view composition and extensibility offered by Om puts
+a gleam in your eye. There&#39;s more than enough here to keep you occupied for
+hours if you wish to take it further yourself.</p>
+
+<p>Otherwise in the next section we&#39;ll show you how we can easily modify
+each professor&#39;s class list and make those changes visible in
+multiple locations on the screen.</p>
+<h2><a class="anchor" name="interactivity-amp-higher-order-components"></a>Interactivity &amp; Higher Order Components <a class="hash-link" href="#interactivity-amp-higher-order-components">#</a></h2>
+<p>Let&#39;s change <code>resources/public/index.html</code> to the following:</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"css/style.css"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">type=</span><span class="s">"text/css"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"registry"</span><span class="nt">&gt;&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"classes"</span><span class="nt">&gt;&lt;/div&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/compiled/om_tut.js"</span> <span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div>
+<p>and <code>resources/public/css/style.css</code> to:</p>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">ul</span> <span class="nt">li</span> <span class="nt">input</span> <span class="p">{</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">400px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">ul</span> <span class="nt">li</span> <span class="nt">button</span> <span class="p">{</span>
+    <span class="nl">margin-left</span><span class="p">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Let&#39;s add <code>classes-view</code> after <code>registry-view</code>:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">classes-view</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:id</span><span class="w"> </span><span class="s">"classes"</span><span class="p">}</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/h2</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Classes"</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">vals</span><span class="w"> </span><span class="p">(</span><span class="no">:classes</span><span class="w"> </span><span class="n">data</span><span class="p">))))))))</span><span class="w">
+</span></code></pre></div>
+<p>Let&#39;s use it by adding a new <code>om/root</code> expression after the existing
+one:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">om/root</span><span class="w"> </span><span class="n">classes-view</span><span class="w"> </span><span class="n">app-state</span><span class="w">
+  </span><span class="p">{</span><span class="no">:target</span><span class="w"> </span><span class="p">(</span><span class="nb">.</span><span class="w"> </span><span class="n">js/document</span><span class="w"> </span><span class="p">(</span><span class="nf">getElementById</span><span class="w"> </span><span class="s">"classes"</span><span class="p">))})</span><span class="w">
+</span></code></pre></div>
+<p>Save all the files, you should see the new bits of UI.</p>
+
+<p>Let&#39;s make class names editable inline. To accomplish this we want to
+make a reusable component that we can plug in wherever we like. This
+will be the most complicated component we have seen so far.</p>
+
+<p>When the user edits a class name we should hide the original text and
+present an input field. So we need a little helper function to do
+this. After <code>app-state</code> add <code>display</code>:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">display</span><span class="w"> </span><span class="p">[</span><span class="n">show</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">show</span><span class="w">
+    </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{}</span><span class="w">
+    </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:display</span><span class="w"> </span><span class="s">"none"</span><span class="p">}))</span><span class="w">
+</span></code></pre></div>
+<p>Every time a user presses a key while editing a class name we want to
+update the application state:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">handle-change</span><span class="w"> </span><span class="p">[</span><span class="n">e</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">om/transact!</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">..</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="n">-target</span><span class="w"> </span><span class="n">-value</span><span class="p">))))</span><span class="w">
+</span></code></pre></div>
+<p>When the input loses focus we want to exit editing mode:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">commit-change</span><span class="w"> </span><span class="p">[</span><span class="n">text</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">om/set-state!</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:editing</span><span class="w"> </span><span class="n">false</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p>These are all helpers for our soon to be written <code>editable</code>
+component. <code>editable</code> takes a JavaScript string and presents it while
+also making it editable. In order for this to work the JavaScript
+string needs to support the Om cursor interface. We don&#39;t need to
+implement this ourselves but we do need to make sure that JavaScript
+strings implement <code>ICloneable</code> so that Om can do the hard work for us
+(<em>Note the following is for demonstration purposes only, it is not
+recommended in most real applications</em>. Please refer to the
+<a href="http://github.com/swannodette/om/wiki/Intermediate-Tutorial">Intermediate Tutorial</a>
+for a better approach that does not require extending JavaScript
+native strings to ICloneable*).</p>
+
+<p><strong>Be sure to put these <code>extend-type</code> forms <em>before</em> the <code>om/root</code> forms.</strong> Putting them near the top of the file will do nicely.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">extend-type</span><span class="w"> </span><span class="n">string</span><span class="w">
+  </span><span class="n">ICloneable</span><span class="w">
+  </span><span class="p">(</span><span class="nf">-clone</span><span class="w"> </span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">js/String.</span><span class="w"> </span><span class="n">s</span><span class="p">)))</span><span class="w">
+</span></code></pre></div>
+<p>Sadly this is not enough because JavaScript String objects and
+JavaScript primitive strings are not the same thing:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">extend-type</span><span class="w"> </span><span class="n">js/String</span><span class="w">
+  </span><span class="n">ICloneable</span><span class="w">
+  </span><span class="p">(</span><span class="nf">-clone</span><span class="w"> </span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">js/String.</span><span class="w"> </span><span class="n">s</span><span class="p">))</span><span class="w">
+  </span><span class="n">om/IValue</span><span class="w">
+  </span><span class="p">(</span><span class="nf">-value</span><span class="w"> </span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="n">s</span><span class="p">)))</span><span class="w">
+</span></code></pre></div>
+<p>We&#39;ll explain <code>IValue</code> in a moment. The ClojureScript compiler will
+emit a warning. Normally you don&#39;t want to ignore it but in this case
+we&#39;ll make an exception in order to keep the <code>editable</code> component as
+simple as possible. Since Figwheel doesn&#39;t reload code with warnings
+by default add this piece of configuration to Figwheel on <code>project.clj</code>:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="w">
+              </span><span class="no">:figwheel</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="no">:load-warninged-code</span><span class="w"> </span><span class="n">true</span><span class="w">  </span><span class="c1">;; &lt;- Add this
+</span><span class="w">                          </span><span class="no">:on-jsload</span><span class="w"> </span><span class="s">"om-tut-v1.core/on-js-reload"</span><span class="w"> </span><span class="p">}</span><span class="w">
+
+</span></code></pre></div>
+<p>Run <code>lein clean</code> (just in case) and restart <code>lein figwheel</code>.</p>
+
+<p>This is the editable component; this might look like a lot but take a
+moment to read it and you&#39;ll see that it&#39;s quite simple.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">editable</span><span class="w"> </span><span class="p">[</span><span class="n">text</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IInitState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">init-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">{</span><span class="no">:editing</span><span class="w"> </span><span class="n">false</span><span class="p">})</span><span class="w">
+    </span><span class="n">om/IRenderState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="p">{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">editing</span><span class="p">]}]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/span</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:style</span><span class="w"> </span><span class="p">(</span><span class="nf">display</span><span class="w"> </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="n">editing</span><span class="p">))}</span><span class="w"> </span><span class="p">(</span><span class="nf">om/value</span><span class="w"> </span><span class="n">text</span><span class="p">))</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/input</span><span class="w">
+          </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:style</span><span class="w"> </span><span class="p">(</span><span class="nf">display</span><span class="w"> </span><span class="n">editing</span><span class="p">)</span><span class="w">
+               </span><span class="no">:value</span><span class="w"> </span><span class="p">(</span><span class="nf">om/value</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w">
+               </span><span class="no">:onChange</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">handle-change</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">owner</span><span class="p">)</span><span class="w">
+               </span><span class="no">:onKeyDown</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="p">(</span><span class="nf">.-key</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w"> </span><span class="s">"Enter"</span><span class="p">)</span><span class="w">
+                              </span><span class="p">(</span><span class="nf">commit-change</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">owner</span><span class="p">))</span><span class="w">
+               </span><span class="no">:onBlur</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">commit-change</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">owner</span><span class="p">))})</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/button</span><span class="w">
+          </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:style</span><span class="w"> </span><span class="p">(</span><span class="nf">display</span><span class="w"> </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="n">editing</span><span class="p">))</span><span class="w">
+               </span><span class="no">:onClick</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">om/set-state!</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:editing</span><span class="w"> </span><span class="n">true</span><span class="p">)}</span><span class="w">
+          </span><span class="s">"Edit"</span><span class="p">)))))</span><span class="w">
+</span></code></pre></div>
+<p>We have to use <code>om.core/value</code> here because React doesn&#39;t know how to
+handle JavaScript String objects. This is also why we implement
+<code>IValue</code> above.</p>
+
+<p>We also need to update <code>professor-view</code> since the class title might be
+a String object instead of a primitive string:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">professor-view</span><span class="w"> </span><span class="p">[</span><span class="n">professor</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">(</span><span class="nf">display-name</span><span class="w"> </span><span class="n">professor</span><span class="p">))</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/label</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Classes"</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">(</span><span class="nf">om/value</span><span class="w"> </span><span class="n">%</span><span class="p">))</span><span class="w"> </span><span class="p">(</span><span class="no">:classes</span><span class="w"> </span><span class="n">professor</span><span class="p">)))))))</span><span class="w">
+</span></code></pre></div>
+<p>Let&#39;s use <code>editable</code> in <code>classes-view</code>:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">classes-view</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:id</span><span class="w"> </span><span class="s">"classes"</span><span class="p">}</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/h2</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Classes"</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">om/build-all</span><span class="w"> </span><span class="n">editable</span><span class="w"> </span><span class="p">(</span><span class="nb">vals</span><span class="w"> </span><span class="p">(</span><span class="no">:classes</span><span class="w"> </span><span class="n">data</span><span class="p">))))))))</span><span class="w">
+</span></code></pre></div>
+<p>That&#39;s it, save it. You should now be able to edit class titles in the
+<code>classes-view</code>. Notice that the class titles in <code>registry-view</code> stay
+perfectly in sync.</p>
+
+<p>As a challenge render the classes in <code>professor-view</code> with <code>editable</code>
+instead of just rendering strings. It&#39;s just a one line change. If you
+get it working notice how editing the class titles from deep within
+the <code>registry-view</code> &quot;just works&quot;. This is the modularity that Om
+cursors provide.</p>
+
+
+    <div class="docs-prevnext">
+      
+      
+        <a class="docs-next" href="/om/intermediate-tutorial">Next &rarr;</a>
+      
+    </div>
+  </div>
+</section>
+
+</body>
+
+</html>

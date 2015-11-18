@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Intermediate Tutorial | Om</title>
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="/css/om.css">
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css">
+</head>
+
+<body>
+  <div class="container">
+
+  <div class="nav-main">
+    <div class="wrap">
+      <a class="nav-home" href="/index.html">
+        <img class="nav-logo" src="/img/logo.svg" width="36" height="36">
+        Om
+      </a>
+      <ul class="nav-site nav-site-internal">
+        <li><a href="/docs/index.html" class="active">Docs</a></li>
+        <li><a href="community.html">Community</a></li>
+      </ul>
+
+      <ul class="nav-site nav-site-external">
+        <li><a href="https://github.com/omcljs/om">GitHub</a>
+      </ul>
+    </div>
+  </div>
+
+  
+
+  <section class="content wrap documentationContent">
+  
+<div class="nav-docs">
+  <!-- Docs Nav -->
+  
+    <div class="nav-docs-section">
+      <h3>Quick Start</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Quick Start Title</h4>
+          
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+    <div class="nav-docs-section">
+      <h3>Om</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Tutorials</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/om/basic-tutorial.html">Basic Tutorial</a>
+                </li>
+              
+                <li>
+                  <a href="/om/intermediate-tutorial.html" class="active">Intermediate Tutorial</a>
+                </li>
+              
+                <li>
+                  <a href="/om/advance-tutorial.html">Advance Tutorial</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+        <li>
+          
+            <h4>Documentation</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/om/documentation.html">Documentation</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+        <li>
+          
+            <h4>Other</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/om/testing.html">Testing</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+    <div class="nav-docs-section">
+      <h3>Om.next</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Guide</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/guide-name.html">Guide Title</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+        <li>
+          
+            <h4>Reference</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/reference-name.html">Reference Title</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+    <div class="nav-docs-section">
+      <h3>Resources</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Videos</h4>
+          
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+</div>
+
+
+  <div class="inner-content">
+    <h1>
+      Intermediate Tutorial
+      <a class="edit-page-link" href="https://github.com/omcljs/om/tree/master/docs/docs/om/Intermediate-Tutorial.md" target="_blank">Edit on GitHub</a>
+    </h1>
+    <div class="subHeader"></div>
+
+    <p>for this next tutorial we&#39;re going to get a bit more
+ambitious. We&#39;re going to build an Om front end to a simple
+<a href="http://github.com/ring-clojure">Ring</a> + <a href="https://github.com/weavejester/compojure">Compojure</a> application that talks to
+<a href="http://datomic.com">Datomic</a> for persistence. You can of course swap
+in another database, but Datomic is particularly easy to use from
+Clojure and also provides time travel capabilities making it quite
+nice to pair with Om.</p>
+
+<p>First download a copy of
+<a href="http://my.datomic.com/downloads/free">Datomic Free</a>. You might get an
+error with versions of Datomic later than <code>0.9.5130</code>, so try that one
+first (seems to be working as of <code>0.9.5130</code>). Unzip it and run the
+following inside the directory:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">bin/transactor config/samples/free-transactor-template.properties
+</code></pre></div>
+<p>This will start up the Datomic transactor.</p>
+
+<p>Now in some other directory run the following to generate the tutorial
+from the <code>om-intermediate-template</code> Lein template:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">lein new om-intermediate-template om-async
+</code></pre></div>
+<p><code>cd</code> into <code>om-async</code> and launch a Lein repl with <code>lein repl</code>. Once the
+repl is up run the following:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">user=&gt; (use 'om-async.util)
+nil
+user=&gt; (init-db)
+:done
+</code></pre></div>
+<p>The tutorial database now exists and is populated. Quit the
+REPL.</p>
+
+<p>If you got an error, try an earlier version of Datomic Free.</p>
+
+<p>We don&#39;t have time to cover all the details of Ring or Datomic here
+but hopefully you get the basic idea. If you&#39;re curious about Datomic
+I highly recommend Jonas Enlund&#39;s
+<a href="http://www.learndatalogtoday.org">tutorial</a> and the
+<a href="http://github.com/Datomic/day-of-datomic">Day of Datomic</a> tutorial.</p>
+
+<p>We will use <a href="https://github.com/bhauman/lein-figwheel">Figwheel</a> to
+reload our front end ClojureScript while we code. Figwheel uses a
+server to auto compile our code and push it to the browser. But we
+also need a server running our back end code. To simplify things, we
+will configure Figwheel in our <code>project.clj</code> to also serve our
+custom handler:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="w">  </span><span class="no">:figwheel</span><span class="w"> </span><span class="p">{</span><span class="no">:ring-handler</span><span class="w"> </span><span class="n">om-async.core/handler</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>To understand the back end code, open <code>src/clj/om-async/core.clj</code> in
+your favorite editor. This code creates <code>om-async.core/handler</code> that
+accepts requests to read and write to Datomic. It also serves the
+static files and the compiled JavaScript files that our ClojureScript code will
+generate.</p>
+
+<p>To start both the server and the compilation process, run:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">lein figwheel 
+</code></pre></div>
+<p><em>Note:</em> to get a better REPL experience install/get <a href="https://github.com/hanslub42/rlwrap">rlwrap</a>. Most Linux systems already have it installed and OSX users can use <code>homebrew</code>. Then run:</p>
+<div class="highlight"><pre><code class="language-" data-lang=""> rlwrap lein figwheel
+</code></pre></div>
+<p>When the server is up, point your browser at
+<a href="http://localhost:3449">localhost:3449</a>. When it is done compiling,
+check if the Browser REPL is connected by typing:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">cljs.user&gt; (js/alert "Am I connected?")
+</code></pre></div>
+<p>You should see the alert in your browser. </p>
+
+<p>Now let&#39;s read the server side code located in
+<code>src/clj/om-async/core.clj</code>. At the top of the file we have the usual
+namespace stuff:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">om-async.core</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">ring.util.response</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">file-response</span><span class="p">]]</span><span class="w">
+            </span><span class="p">[</span><span class="n">ring.adapter.jetty</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">run-jetty</span><span class="p">]]</span><span class="w">
+            </span><span class="p">[</span><span class="n">compojure.core</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">defroutes</span><span class="w"> </span><span class="n">GET</span><span class="w"> </span><span class="n">PUT</span><span class="p">]]</span><span class="w">
+            </span><span class="p">[</span><span class="n">compojure.route</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">route</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">compojure.handler</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">handler</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">clojure.edn</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">edn</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">datomic.api</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">d</span><span class="p">]))</span><span class="w">
+</span></code></pre></div>
+<p>Then we establish a connection to Datomic:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">uri</span><span class="w"> </span><span class="s">"datomic:free://localhost:4334/om_async"</span><span class="p">)</span><span class="w">
+</span><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">conn</span><span class="w"> </span><span class="p">(</span><span class="nf">d/connect</span><span class="w"> </span><span class="n">uri</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p>We then define our main route handler <code>index</code>:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="nb">index</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">file-response</span><span class="w"> </span><span class="s">"public/html/index.html"</span><span class="w"> </span><span class="p">{</span><span class="no">:root</span><span class="w"> </span><span class="s">"resources"</span><span class="p">}))</span><span class="w">
+</span></code></pre></div>
+<p>Instead of <a href="http://www.json.org">JSON</a> as a data format, we&#39;ll
+use <a href="http://github.com/edn-format/edn">EDN</a>. We write a little helper
+for the EDN middleware we&#39;ll be using:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">generate-response</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">[</span><span class="n">status</span><span class="p">]]</span><span class="w">
+  </span><span class="p">{</span><span class="no">:status</span><span class="w"> </span><span class="p">(</span><span class="nb">or</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="mi">200</span><span class="p">)</span><span class="w">
+   </span><span class="no">:headers</span><span class="w"> </span><span class="p">{</span><span class="s">"Content-Type"</span><span class="w"> </span><span class="s">"application/edn"</span><span class="p">}</span><span class="w">
+   </span><span class="no">:body</span><span class="w"> </span><span class="p">(</span><span class="nb">pr-str</span><span class="w"> </span><span class="n">data</span><span class="p">)})</span><span class="w">
+</span></code></pre></div>
+<p>Skip ahead briefly and let&#39;s take a look at <code>classes</code>:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">db</span><span class="w"> </span><span class="p">(</span><span class="nf">d/db</span><span class="w"> </span><span class="n">conn</span><span class="p">)</span><span class="w">
+        </span><span class="n">classes</span><span class="w">
+        </span><span class="p">(</span><span class="nf">vec</span><span class="w"> </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">d/touch</span><span class="w"> </span><span class="p">(</span><span class="nf">d/entity</span><span class="w"> </span><span class="n">db</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">%</span><span class="p">)))</span><span class="w">
+               </span><span class="p">(</span><span class="nf">d/q</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="no">:find</span><span class="w"> </span><span class="n">?class</span><span class="w">
+                      </span><span class="no">:where</span><span class="w">
+                      </span><span class="p">[</span><span class="n">?class</span><span class="w"> </span><span class="no">:class/id</span><span class="p">]]</span><span class="w">
+                 </span><span class="n">db</span><span class="p">)))]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">generate-response</span><span class="w"> </span><span class="n">classes</span><span class="p">)))</span><span class="w">
+</span></code></pre></div>
+<p>This just finds all the classes and returns an EDN response.</p>
+
+<p>Back up and look at <code>update-class</code>. It finds a class by id and modifies the
+title:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">update-class</span><span class="w"> </span><span class="p">[</span><span class="n">id</span><span class="w"> </span><span class="n">params</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">db</span><span class="w">    </span><span class="p">(</span><span class="nf">d/db</span><span class="w"> </span><span class="n">conn</span><span class="p">)</span><span class="w">
+        </span><span class="n">title</span><span class="w"> </span><span class="p">(</span><span class="no">:class/title</span><span class="w"> </span><span class="n">params</span><span class="p">)</span><span class="w">
+        </span><span class="n">eid</span><span class="w">   </span><span class="p">(</span><span class="nb">ffirst</span><span class="w">
+                </span><span class="p">(</span><span class="nf">d/q</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="no">:find</span><span class="w"> </span><span class="n">?class</span><span class="w">
+                       </span><span class="no">:in</span><span class="w"> </span><span class="n">$</span><span class="w"> </span><span class="n">?id</span><span class="w">
+                       </span><span class="no">:where</span><span class="w"> 
+                       </span><span class="p">[</span><span class="n">?class</span><span class="w"> </span><span class="no">:class/id</span><span class="w"> </span><span class="n">?id</span><span class="p">]]</span><span class="w">
+                  </span><span class="n">db</span><span class="w"> </span><span class="n">id</span><span class="p">))]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">d/transact</span><span class="w"> </span><span class="n">conn</span><span class="w"> </span><span class="p">[[</span><span class="no">:db/add</span><span class="w"> </span><span class="n">eid</span><span class="w"> </span><span class="no">:class/title</span><span class="w"> </span><span class="n">title</span><span class="p">]])</span><span class="w">
+    </span><span class="p">(</span><span class="nf">generate-response</span><span class="w"> </span><span class="p">{</span><span class="no">:status</span><span class="w"> </span><span class="no">:ok</span><span class="p">})))</span><span class="w">
+</span></code></pre></div>
+<p>We then have our <code>routes</code>:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defroutes</span><span class="w"> </span><span class="n">routes</span><span class="w">
+  </span><span class="p">(</span><span class="nf">GET</span><span class="w"> </span><span class="s">"/"</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">(</span><span class="nb">index</span><span class="p">))</span><span class="w">
+  </span><span class="p">(</span><span class="nf">GET</span><span class="w"> </span><span class="s">"/classes"</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">(</span><span class="nf">classes</span><span class="p">))</span><span class="w">
+  </span><span class="p">(</span><span class="nf">PUT</span><span class="w"> </span><span class="s">"/class/:id/update"</span><span class="w">
+    </span><span class="p">{</span><span class="n">params</span><span class="w"> </span><span class="no">:params</span><span class="w"> </span><span class="n">edn-body</span><span class="w"> </span><span class="no">:edn-body</span><span class="p">}</span><span class="w">
+    </span><span class="p">(</span><span class="nf">update-class</span><span class="w"> </span><span class="p">(</span><span class="no">:id</span><span class="w"> </span><span class="n">params</span><span class="p">)</span><span class="w"> </span><span class="n">edn-body</span><span class="p">))</span><span class="w">
+  </span><span class="p">(</span><span class="nf">route/files</span><span class="w"> </span><span class="s">"/"</span><span class="w"> </span><span class="p">{</span><span class="no">:root</span><span class="w"> </span><span class="s">"resources/public"</span><span class="p">}))</span><span class="w">
+</span></code></pre></div>
+<p>The <code>PUT</code> handler assumes that all incoming requests will have an <code>edn-body</code>.
+This is the body of the request parsed into EDN format by our own middleware:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">parse-edn-body</span><span class="w"> </span><span class="p">[</span><span class="n">handler</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">request</span><span class="p">]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">handler</span><span class="w"> </span><span class="p">(</span><span class="nb">if-let</span><span class="w"> </span><span class="p">[</span><span class="n">body</span><span class="w"> </span><span class="p">(</span><span class="no">:body</span><span class="w"> </span><span class="n">request</span><span class="p">)]</span><span class="w">
+               </span><span class="p">(</span><span class="nb">assoc</span><span class="w"> </span><span class="n">request</span><span class="w">
+                 </span><span class="no">:edn-body</span><span class="w"> </span><span class="p">(</span><span class="nf">read-inputstream-edn</span><span class="w"> </span><span class="n">body</span><span class="p">))</span><span class="w">
+               </span><span class="n">request</span><span class="p">))))</span><span class="w">
+</span></code></pre></div>
+<p>Finally we add the EDN middleware to get our final handler:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">handler</span><span class="w"> 
+  </span><span class="p">(</span><span class="nb">-&gt;</span><span class="w"> </span><span class="n">routes</span><span class="w">
+      </span><span class="n">parse-edn-body</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p>Let&#39;s look at the client side portion now; open <code>src/cljs/om-async/core.cljs</code> in your editor. The <code>ns</code> form should look familiar, and we enable <code>console.log</code> printing. The <code>ns</code> metadata tells Figwheel that we want to do code reloading:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="o">^</span><span class="no">:figwheel-always</span><span class="w"> </span><span class="n">om-async.core</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">cljs.reader</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">reader</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">goog.events</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">events</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">om.core</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">om</span><span class="w"> </span><span class="no">:include-macros</span><span class="w"> </span><span class="n">true</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">om.dom</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">dom</span><span class="w"> </span><span class="no">:include-macros</span><span class="w"> </span><span class="n">true</span><span class="p">])</span><span class="w">
+  </span><span class="p">(</span><span class="no">:import</span><span class="w"> </span><span class="p">[</span><span class="n">goog.net</span><span class="w"> </span><span class="n">XhrIo</span><span class="p">]</span><span class="w">
+           </span><span class="n">goog.net.EventType</span><span class="w">
+           </span><span class="p">[</span><span class="n">goog.events</span><span class="w"> </span><span class="n">EventType</span><span class="p">]))</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">enable-console-print!</span><span class="p">)</span><span class="w">
+
+</span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"Hello world!"</span><span class="p">)</span><span class="w">
+
+</span></code></pre></div>
+<p>We&#39;re going to use simple callbacks to begin this tutorial instead of
+diving in with core.async immediately.</p>
+
+<p>First we write a simple utility for making async requests to the
+server with EDN. We rely on Google Closure to deal with cross browser
+issues:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="o">^</span><span class="no">:private</span><span class="w"> </span><span class="n">meths</span><span class="w">
+  </span><span class="p">{</span><span class="no">:get</span><span class="w"> </span><span class="s">"GET"</span><span class="w">
+   </span><span class="no">:put</span><span class="w"> </span><span class="s">"PUT"</span><span class="w">
+   </span><span class="no">:post</span><span class="w"> </span><span class="s">"POST"</span><span class="w">
+   </span><span class="no">:delete</span><span class="w"> </span><span class="s">"DELETE"</span><span class="p">})</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">edn-xhr</span><span class="w"> </span><span class="p">[{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">method</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">on-complete</span><span class="p">]}]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">xhr</span><span class="w"> </span><span class="p">(</span><span class="nf">XhrIo.</span><span class="p">)]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">events/listen</span><span class="w"> </span><span class="n">xhr</span><span class="w"> </span><span class="n">goog.net.EventType.COMPLETE</span><span class="w">
+      </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="w">
+        </span><span class="p">(</span><span class="nf">on-complete</span><span class="w"> </span><span class="p">(</span><span class="nf">reader/read-string</span><span class="w"> </span><span class="p">(</span><span class="nf">.getResponseText</span><span class="w"> </span><span class="n">xhr</span><span class="p">)))))</span><span class="w">
+    </span><span class="p">(</span><span class="nb">.</span><span class="w"> </span><span class="n">xhr</span><span class="w">
+      </span><span class="p">(</span><span class="nb">send</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="p">(</span><span class="nf">meths</span><span class="w"> </span><span class="n">method</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="p">(</span><span class="nb">pr-str</span><span class="w"> </span><span class="n">data</span><span class="p">))</span><span class="w">
+        </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="s">"Content-Type"</span><span class="w"> </span><span class="s">"application/edn"</span><span class="p">}))))</span><span class="w">
+</span></code></pre></div>
+<p>Next we define our <code>app-state</code>. In this case we won&#39;t have initial
+data because we will need to fetch it from the server. Still we need
+to provide the basic structure:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">app-state</span><span class="w">
+  </span><span class="p">(</span><span class="nf">atom</span><span class="w"> </span><span class="p">{</span><span class="no">:classes</span><span class="w"> </span><span class="p">[]}))</span><span class="w">
+</span></code></pre></div>
+<p>Next we need the <code>display</code> style helper from the previous tutorial:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">display</span><span class="w"> </span><span class="p">[</span><span class="n">show</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">show</span><span class="w">
+    </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{}</span><span class="w">
+    </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:display</span><span class="w"> </span><span class="s">"none"</span><span class="p">}))</span><span class="w">
+</span></code></pre></div>
+<p>We are now going to write a version of the <code>editable</code> component that does not require hacking around the differences between JavaScript primitive strings and JavaScript String objects. The following is strongly recommended over extending native types to <code>ICloneable</code> as we did to get by in the <a href="https://github.com/omcljs/om/wiki/Basic-Tutorial">Basic Tutorial</a>.</p>
+
+<p>Instead of <code>editable</code> taking a string cursor from the application state,
+it will take some larger piece of data and a key to locate the
+string to edit. <code>handle-change</code> now looks like this:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">handle-change</span><span class="w"> </span><span class="p">[</span><span class="n">e</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">edit-key</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">om/transact!</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">edit-key</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">..</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="n">-target</span><span class="w"> </span><span class="n">-value</span><span class="p">))))</span><span class="w">
+</span></code></pre></div>
+<p>Because <code>editable</code> is so simple and to demonstrate alternative approaches, instead of using core.async channels <code>editable</code> will notify its parent component with a callback when editing is complete:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">end-edit</span><span class="w"> </span><span class="p">[</span><span class="n">text</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="n">cb</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">om/set-state!</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:editing</span><span class="w"> </span><span class="n">false</span><span class="p">)</span><span class="w">
+  </span><span class="p">(</span><span class="nf">cb</span><span class="w"> </span><span class="n">text</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p>This is <code>editable</code>:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">editable</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="p">{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">edit-key</span><span class="w"> </span><span class="n">on-edit</span><span class="p">]</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">opts</span><span class="p">}]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IInitState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">init-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">{</span><span class="no">:editing</span><span class="w"> </span><span class="n">false</span><span class="p">})</span><span class="w">
+    </span><span class="n">om/IRenderState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="p">{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">editing</span><span class="p">]}]</span><span class="w">
+      </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">text</span><span class="w"> </span><span class="p">(</span><span class="nb">get</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">edit-key</span><span class="p">)]</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/span</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:style</span><span class="w"> </span><span class="p">(</span><span class="nf">display</span><span class="w"> </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="n">editing</span><span class="p">))}</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/input</span><span class="w">
+            </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:style</span><span class="w"> </span><span class="p">(</span><span class="nf">display</span><span class="w"> </span><span class="n">editing</span><span class="p">)</span><span class="w">
+                 </span><span class="no">:value</span><span class="w"> </span><span class="n">text</span><span class="w">
+                 </span><span class="no">:onChange</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">handle-change</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">edit-key</span><span class="w"> </span><span class="n">owner</span><span class="p">)</span><span class="w">
+                 </span><span class="no">:onKeyDown</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="p">(</span><span class="nf">.-key</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w"> </span><span class="s">"Enter"</span><span class="p">)</span><span class="w">
+                                </span><span class="p">(</span><span class="nf">end-edit</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="n">on-edit</span><span class="p">))</span><span class="w">
+                 </span><span class="no">:onBlur</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="w">
+                           </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="p">(</span><span class="nf">om/get-state</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:editing</span><span class="p">)</span><span class="w">
+                             </span><span class="p">(</span><span class="nf">end-edit</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="n">on-edit</span><span class="p">)))})</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/button</span><span class="w">
+            </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:style</span><span class="w"> </span><span class="p">(</span><span class="nf">display</span><span class="w"> </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="n">editing</span><span class="p">))</span><span class="w">
+                 </span><span class="no">:onClick</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">om/set-state!</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:editing</span><span class="w"> </span><span class="n">true</span><span class="p">)}</span><span class="w">
+            </span><span class="s">"Edit"</span><span class="p">))))))</span><span class="w">
+</span></code></pre></div>
+<p>Take the time to read through and understand this code. It&#39;s almost
+identical to the previous version with the exception that we take
+<code>data</code> which is a map cursor. We also take an <code>edit-key</code> and the
+<code>on-edit</code> callback via <code>opts</code>.</p>
+
+<p>We now have a generic editable component that doesn&#39;t require us to hack
+JavaScript strings.</p>
+
+<p>When the user commits a change we want to communicate this back to the
+server:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">on-edit</span><span class="w"> </span><span class="p">[</span><span class="n">id</span><span class="w"> </span><span class="n">title</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">edn-xhr</span><span class="w">
+    </span><span class="p">{</span><span class="no">:method</span><span class="w"> </span><span class="no">:put</span><span class="w">
+     </span><span class="no">:url</span><span class="w"> </span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="s">"class/"</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="s">"/update"</span><span class="p">)</span><span class="w">
+     </span><span class="no">:data</span><span class="w"> </span><span class="p">{</span><span class="no">:class/title</span><span class="w"> </span><span class="n">title</span><span class="p">}</span><span class="w">
+     </span><span class="no">:on-complete</span><span class="w">
+     </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">res</span><span class="p">]</span><span class="w">
+       </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="s">"server response:"</span><span class="w"> </span><span class="n">res</span><span class="p">))}))</span><span class="w">
+</span></code></pre></div>
+<p>Our <code>classes-view</code> will load the data from server on
+<code>om.core/IWillMount</code>.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">classes-view</span><span class="w"> </span><span class="p">[</span><span class="n">app</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IWillMount</span><span class="w">
+    </span><span class="p">(</span><span class="nf">will-mount</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">edn-xhr</span><span class="w">
+        </span><span class="p">{</span><span class="no">:method</span><span class="w"> </span><span class="no">:get</span><span class="w">
+         </span><span class="no">:url</span><span class="w"> </span><span class="s">"classes"</span><span class="w">
+         </span><span class="no">:on-complete</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">om/transact!</span><span class="w"> </span><span class="n">app</span><span class="w"> </span><span class="no">:classes</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w"> </span><span class="n">%</span><span class="p">))}))</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:id</span><span class="w"> </span><span class="s">"classes"</span><span class="p">}</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/h2</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Classes"</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nb">map</span><span class="w">
+            </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="nb">class</span><span class="p">]</span><span class="w">
+              </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">id</span><span class="w"> </span><span class="p">(</span><span class="no">:class/id</span><span class="w"> </span><span class="nb">class</span><span class="p">)]</span><span class="w">
+                </span><span class="p">(</span><span class="nf">om/build</span><span class="w"> </span><span class="n">editable</span><span class="w"> </span><span class="nb">class</span><span class="w">
+                  </span><span class="p">{</span><span class="no">:opts</span><span class="w"> </span><span class="p">{</span><span class="no">:edit-key</span><span class="w"> </span><span class="no">:class/title</span><span class="w">
+                          </span><span class="no">:on-edit</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">on-edit</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="n">%</span><span class="p">)}})))</span><span class="w">
+            </span><span class="p">(</span><span class="no">:classes</span><span class="w"> </span><span class="n">app</span><span class="p">)))))))</span><span class="w">
+
+</span><span class="p">(</span><span class="nf">om/root</span><span class="w"> </span><span class="n">classes-view</span><span class="w"> </span><span class="n">app-state</span><span class="w">
+  </span><span class="p">{</span><span class="no">:target</span><span class="w"> </span><span class="p">(</span><span class="nf">.getElementById</span><span class="w"> </span><span class="n">js/document</span><span class="w"> </span><span class="s">"classes"</span><span class="p">)})</span><span class="w">
+</span></code></pre></div>
+<p>That&#39;s it. Save your file. You should see the list of
+classes loaded from the server. You should be able to edit a class
+title. Press enter to commit the title change. Refresh your browser
+and you should see that the change persisted.</p>
+
+<p>Both your back end and front end can support sophisticated operations on
+application state history without incurring incidental complexity.</p>
+<h2><a class="anchor" name="speculative-ui-programming"></a>Speculative UI Programming <a class="hash-link" href="#speculative-ui-programming">#</a></h2>
+<p>Many difficulties in modern UI programming arise from the fact that
+we&#39;re often building distributed systems - clients and servers. Not
+only do we have to keep clients and servers in sync but we have to
+gracefully handle those cases where sync is not possible.</p>
+
+<p>It&#39;s quite common in modern applications to make an optimistic commit,
+and then discover that synchronization cannot happen - perhaps
+because of a back end bug, undefined behavior in the API
+, or commonly the complete lack of network connectivity. In this
+distributed setting UI programming becomes a speculative endeavor.</p>
+
+<p>One well known form of speculative UI programming is multi-level
+undo. It&#39;s telling that many single page user interfaces on the web do
+not support this kind of undo - it&#39;s hard enough to implement in a
+desktop application. Add the distributed component and most developers
+raise the white flag.</p>
+
+<p>However an immutable UI approach like Om and immutable databases like
+Datomic provide the infrastructure to make these problems very
+approachable even in a distributed context.</p>
+
+<p>We&#39;ll come back to this, but first let&#39;s explore modularity in the
+context of synchronizing application state.</p>
+<h3><a class="anchor" name="modularity"></a>Modularity <a class="hash-link" href="#modularity">#</a></h3>
+<p>Ideally we can build our UIs without considering synchronization. And
+when we come to the problem of synchronization we should be able to add
+it to our application without changing any code we have already written.</p>
+
+<p>This is effectively the goal of
+<a href="http://github.com/swannodette/om-sync">om-sync</a>, a reusable
+synchronization component for Om. You can take your existing
+component, put together an application and impose a synchronization
+policy without changing your own code.</p>
+
+<p>Let&#39;s modify the previous tutorial so that we can demonstrate this now.</p>
+<h4><a class="anchor" name="updating-the-server"></a>Updating the Server <a class="hash-link" href="#updating-the-server">#</a></h4>
+<p>Make sure the Datomic transactor is running as before.</p>
+
+<p>First we need to change our <code>project.clj</code> to include a dependency on
+<code>om-sync</code>.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="w">  </span><span class="no">:dependencies</span><span class="w"> </span><span class="p">[[</span><span class="n">org.clojure/clojure</span><span class="w"> </span><span class="s">"1.6.0"</span><span class="p">]</span><span class="w">
+                 </span><span class="p">[</span><span class="n">org.clojure/clojurescript</span><span class="w"> </span><span class="s">"0.0-3195"</span><span class="p">]</span><span class="w">
+                 </span><span class="p">[</span><span class="n">org.clojure/core.async</span><span class="w"> </span><span class="s">"0.1.346.0-17112a-alpha"</span><span class="p">]</span><span class="w">
+                 </span><span class="p">[</span><span class="n">org.omcljs/om</span><span class="w"> </span><span class="s">"0.8.8"</span><span class="p">]</span><span class="w">
+                 </span><span class="p">[</span><span class="n">om-sync</span><span class="w"> </span><span class="s">"0.1.1"</span><span class="p">]</span><span class="w"> </span><span class="c1">;; &lt;=== ADD THIS
+</span><span class="w">                 </span><span class="p">[</span><span class="n">ring</span><span class="w"> </span><span class="s">"1.3.2"</span><span class="p">]</span><span class="w">
+                 </span><span class="p">[</span><span class="n">compojure</span><span class="w"> </span><span class="s">"1.3.1"</span><span class="p">]</span><span class="w">
+                 </span><span class="p">[</span><span class="n">com.datomic/datomic-free</span><span class="w"> </span><span class="s">"0.9.5130"</span><span class="w"> </span><span class="no">:exclusions</span><span class="w"> </span><span class="p">[</span><span class="n">joda-time</span><span class="p">]]]</span><span class="w">
+</span></code></pre></div>
+<p>Let&#39;s update the server side code to uniformly handle EDN requests.</p>
+
+<p>After <code>generate-response</code> let&#39;s add <code>get-classes</code>:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">get-classes</span><span class="w"> </span><span class="p">[</span><span class="n">db</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">-&gt;&gt;</span><span class="w"> </span><span class="p">(</span><span class="nf">d/q</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="no">:find</span><span class="w"> </span><span class="n">?class</span><span class="w">
+              </span><span class="no">:where</span><span class="w">
+              </span><span class="p">[</span><span class="n">?class</span><span class="w"> </span><span class="no">:class/id</span><span class="p">]]</span><span class="w">
+          </span><span class="n">db</span><span class="p">)</span><span class="w">
+       </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">d/touch</span><span class="w"> </span><span class="p">(</span><span class="nf">d/entity</span><span class="w"> </span><span class="n">db</span><span class="w"> </span><span class="p">(</span><span class="nb">first</span><span class="w"> </span><span class="n">%</span><span class="p">))))</span><span class="w">
+       </span><span class="n">vec</span><span class="p">))</span><span class="w">
+</span></code></pre></div>
+<p>We want to be able to properly initialize the client state as well as
+give it information so that it can communicate back with the server:</p>
+
+<p>Let&#39;s make a request handler called <code>init</code>:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">init</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">generate-response</span><span class="w">
+     </span><span class="p">{</span><span class="no">:classes</span><span class="w"> </span><span class="p">{</span><span class="no">:url</span><span class="w"> </span><span class="s">"/classes"</span><span class="w"> </span><span class="no">:coll</span><span class="w"> </span><span class="p">(</span><span class="nf">get-classes</span><span class="w"> </span><span class="p">(</span><span class="nf">d/db</span><span class="w"> </span><span class="n">conn</span><span class="p">))}}))</span><span class="w">
+</span></code></pre></div>
+<p>We&#39;re also going to add a handler for creating classes but we&#39;re going
+to return a 500 for now to demonstrate some neat properties of Om:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">create-class</span><span class="w"> </span><span class="p">[</span><span class="n">params</span><span class="p">]</span><span class="w">
+  </span><span class="p">{</span><span class="no">:status</span><span class="w"> </span><span class="mi">500</span><span class="p">})</span><span class="w">
+</span></code></pre></div>
+<p>Let&#39;s refactor <code>update-class</code> a bit:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">update-class</span><span class="w"> </span><span class="p">[</span><span class="n">params</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">id</span><span class="w">    </span><span class="p">(</span><span class="no">:class/id</span><span class="w"> </span><span class="n">params</span><span class="p">)</span><span class="w">
+        </span><span class="n">db</span><span class="w">    </span><span class="p">(</span><span class="nf">d/db</span><span class="w"> </span><span class="n">conn</span><span class="p">)</span><span class="w">
+        </span><span class="n">title</span><span class="w"> </span><span class="p">(</span><span class="no">:class/title</span><span class="w"> </span><span class="n">params</span><span class="p">)</span><span class="w">
+        </span><span class="n">eid</span><span class="w">   </span><span class="p">(</span><span class="nb">ffirst</span><span class="w">
+                </span><span class="p">(</span><span class="nf">d/q</span><span class="w"> </span><span class="o">'</span><span class="p">[</span><span class="no">:find</span><span class="w"> </span><span class="n">?class</span><span class="w">
+                       </span><span class="no">:in</span><span class="w"> </span><span class="n">$</span><span class="w"> </span><span class="n">?id</span><span class="w">
+                       </span><span class="no">:where</span><span class="w">
+                       </span><span class="p">[</span><span class="n">?class</span><span class="w"> </span><span class="no">:class/id</span><span class="w"> </span><span class="n">?id</span><span class="p">]]</span><span class="w">
+                  </span><span class="n">db</span><span class="w"> </span><span class="n">id</span><span class="p">))]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">d/transact</span><span class="w"> </span><span class="n">conn</span><span class="w"> </span><span class="p">[[</span><span class="no">:db/add</span><span class="w"> </span><span class="n">eid</span><span class="w"> </span><span class="no">:class/title</span><span class="w"> </span><span class="n">title</span><span class="p">]])</span><span class="w">
+    </span><span class="p">(</span><span class="nf">generate-response</span><span class="w"> </span><span class="p">{</span><span class="no">:status</span><span class="w"> </span><span class="no">:ok</span><span class="p">})))</span><span class="w">
+</span></code></pre></div>
+<p>Let&#39;s also refactor the <code>classes</code> request handler:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">generate-response</span><span class="w"> </span><span class="p">(</span><span class="nf">get-classes</span><span class="w"> </span><span class="p">(</span><span class="nf">d/db</span><span class="w"> </span><span class="n">conn</span><span class="p">))))</span><span class="w">
+</span></code></pre></div>
+<p>We are introducing the <code>POST</code> HTTP method so need to make sure it is imported.
+Add <code>POST</code> to the <code>compojure.core</code> import at the top of the file:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="n">om-async.core</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">ring.util.response</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">file-response</span><span class="p">]]</span><span class="w">
+            </span><span class="p">[</span><span class="n">ring.adapter.jetty</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">run-jetty</span><span class="p">]]</span><span class="w">
+            </span><span class="p">[</span><span class="n">compojure.core</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">defroutes</span><span class="w"> </span><span class="n">GET</span><span class="w"> </span><span class="n">PUT</span><span class="w"> </span><span class="n">POST</span><span class="p">]]</span><span class="w"> </span><span class="c1">;; &lt;=== ADD POST
+</span><span class="w">            </span><span class="p">[</span><span class="n">compojure.route</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">route</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">compojure.handler</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">handler</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">clojure.edn</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">edn</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">datomic.api</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">d</span><span class="p">]))</span><span class="w">
+</span></code></pre></div>
+<p>And let&#39;s provide the new routes:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">defroutes</span><span class="w"> </span><span class="n">routes</span><span class="w">
+  </span><span class="p">(</span><span class="nf">GET</span><span class="w"> </span><span class="s">"/"</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">(</span><span class="nb">index</span><span class="p">))</span><span class="w">
+  </span><span class="p">(</span><span class="nf">GET</span><span class="w"> </span><span class="s">"/init"</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">(</span><span class="nf">init</span><span class="p">))</span><span class="w">
+  </span><span class="p">(</span><span class="nf">GET</span><span class="w"> </span><span class="s">"/classes"</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">(</span><span class="nf">classes</span><span class="p">))</span><span class="w">
+  </span><span class="p">(</span><span class="nf">POST</span><span class="w"> </span><span class="s">"/classes"</span><span class="w"> </span><span class="p">{</span><span class="n">params</span><span class="w"> </span><span class="no">:edn-body</span><span class="p">}</span><span class="w"> </span><span class="p">(</span><span class="nf">create-class</span><span class="w"> </span><span class="n">params</span><span class="p">))</span><span class="w">
+  </span><span class="p">(</span><span class="nf">PUT</span><span class="w"> </span><span class="s">"/classes"</span><span class="w"> </span><span class="p">{</span><span class="n">params</span><span class="w"> </span><span class="no">:edn-body</span><span class="p">}</span><span class="w"> </span><span class="p">(</span><span class="nf">update-class</span><span class="w"> </span><span class="n">params</span><span class="p">))</span><span class="w">
+  </span><span class="p">(</span><span class="nf">route/files</span><span class="w"> </span><span class="s">"/"</span><span class="w"> </span><span class="p">{</span><span class="no">:root</span><span class="w"> </span><span class="s">"resources/public"</span><span class="p">}))</span><span class="w">
+</span></code></pre></div>
+<p>Since we modified our <code>ns</code> declaration you might need to restart <code>lein
+figwheel</code>. That&#39;s it for our server side code. Let&#39;s update the
+client code.</p>
+<h4><a class="anchor" name="updating-the-client"></a>Updating the Client <a class="hash-link" href="#updating-the-client">#</a></h4>
+<p>First we need to modify the namespace form. Since we&#39;ll be using
+<code>om-sync</code> we clean up some things:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="nf">ns</span><span class="w"> </span><span class="o">^</span><span class="no">:figwheel-always</span><span class="w"> </span><span class="n">om-async.core</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require-macros</span><span class="w"> </span><span class="p">[</span><span class="n">cljs.core.async.macros</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">go</span><span class="p">]])</span><span class="w">
+  </span><span class="p">(</span><span class="no">:require</span><span class="w"> </span><span class="p">[</span><span class="n">cljs.core.async</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">async</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">put!</span><span class="w"> </span><span class="n">chan</span><span class="w"> </span><span class="n">alts!</span><span class="p">]]</span><span class="w">
+            </span><span class="p">[</span><span class="n">om.core</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">om</span><span class="w"> </span><span class="no">:include-macros</span><span class="w"> </span><span class="n">true</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">om.dom</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">dom</span><span class="w"> </span><span class="no">:include-macros</span><span class="w"> </span><span class="n">true</span><span class="p">]</span><span class="w">
+            </span><span class="p">[</span><span class="n">om-sync.core</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">om-sync</span><span class="p">]]</span><span class="w">
+            </span><span class="p">[</span><span class="n">om-sync.util</span><span class="w"> </span><span class="no">:refer</span><span class="w"> </span><span class="p">[</span><span class="n">tx-tag</span><span class="w"> </span><span class="n">edn-xhr</span><span class="p">]]))</span><span class="w">
+</span></code></pre></div>
+<p>Remove the edn-xhr function and private meths map created earlier. We now use edn-xhr as defined in om-sync.util.</p>
+
+<p>In order for <code>om-sync</code> to work you need modify how you call
+<code>om.core/root</code>. <code>om-sync</code> needs to be able to subscribe to the
+application&#39;s transactions so that it can observe transactions that
+are relevant to it.</p>
+
+<p>We use core.async to publish a channel that components like <code>om-sync</code>
+can subscribe to. This is done by making the channel a global service via
+<code>:shared</code>. We also make an EDN request to get our initial state using
+the new <code>init</code> route we wrote on the back end.</p>
+
+<p>Remove our old call to om/root and place the following at the very bottom of the page:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">tx-chan</span><span class="w"> </span><span class="p">(</span><span class="nf">chan</span><span class="p">)</span><span class="w">
+      </span><span class="n">tx-pub-chan</span><span class="w"> </span><span class="p">(</span><span class="nf">async/pub</span><span class="w"> </span><span class="n">tx-chan</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w"> </span><span class="no">:txs</span><span class="p">))]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">edn-xhr</span><span class="w">
+    </span><span class="p">{</span><span class="no">:method</span><span class="w"> </span><span class="no">:get</span><span class="w">
+     </span><span class="no">:url</span><span class="w"> </span><span class="s">"/init"</span><span class="w">
+     </span><span class="no">:on-complete</span><span class="w">
+     </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">res</span><span class="p">]</span><span class="w">
+       </span><span class="p">(</span><span class="nf">reset!</span><span class="w"> </span><span class="n">app-state</span><span class="w"> </span><span class="n">res</span><span class="p">)</span><span class="w">
+       </span><span class="p">(</span><span class="nf">om/root</span><span class="w"> </span><span class="n">app-view</span><span class="w"> </span><span class="n">app-state</span><span class="w">
+         </span><span class="p">{</span><span class="no">:target</span><span class="w"> </span><span class="p">(</span><span class="nf">.getElementById</span><span class="w"> </span><span class="n">js/document</span><span class="w"> </span><span class="s">"classes"</span><span class="p">)</span><span class="w"> 
+          </span><span class="no">:shared</span><span class="w"> </span><span class="p">{</span><span class="no">:tx-chan</span><span class="w"> </span><span class="n">tx-pub-chan</span><span class="p">}</span><span class="w">
+          </span><span class="no">:tx-listen</span><span class="w">
+          </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">tx-data</span><span class="w"> </span><span class="n">root-cursor</span><span class="p">]</span><span class="w">
+            </span><span class="p">(</span><span class="nf">put!</span><span class="w"> </span><span class="n">tx-chan</span><span class="w"> </span><span class="p">[</span><span class="n">tx-data</span><span class="w"> </span><span class="n">root-cursor</span><span class="p">]))}))}))</span><span class="w">
+</span></code></pre></div>
+<p>We create a channel <code>tx-chan</code>. We then make a subscribeable channel
+<code>tx-pub-chan</code> so that <code>om-sync</code> instances can call
+<code>cljs.core.async/sub</code> on it. We request the initial state of the
+application from the server. Here we use some <code>om.core/root</code> options we
+have not seen before. <code>:shared</code> allows us to provide a global service
+to any components in our application. <code>:tx-listen</code> is a callback that
+will be invoked anytime the application state transitions. We simply
+put this information into <code>tx-chan</code>.</p>
+
+<p>Technically we don&#39;t need to change <code>editable</code> to make this work,
+but we&#39;re going to make <code>editable</code> a better citizen in order to
+explain how <code>om-sync</code> works.</p>
+
+<p>First modify <code>end-edit</code>:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">end-edit</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">edit-key</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="n">cb</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">om/set-state!</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:editing</span><span class="w"> </span><span class="n">false</span><span class="p">)</span><span class="w">
+  </span><span class="p">(</span><span class="nf">om/transact!</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">edit-key</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="no">:update</span><span class="p">)</span><span class="w">
+  </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="n">cb</span><span class="w">
+    </span><span class="p">(</span><span class="nf">cb</span><span class="w"> </span><span class="n">text</span><span class="p">)))</span><span class="w">
+</span></code></pre></div>
+<p>The changes here are mostly because of the fact that we now invoke <code>om/transact!</code>. The interesting part is that this <code>om/transact!</code> supplies a tag, <code>:update</code>. <code>om-sync</code> specifically listens for <code>:create</code>, <code>:update</code>, and <code>:delete</code> tags. We could make this work without the transaction tag, but not as simply.</p>
+
+<p><code>editable</code> needs to change to accommodate the new <code>end-edit</code> signature:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">editable</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="p">{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">edit-key</span><span class="w"> </span><span class="n">on-edit</span><span class="p">]</span><span class="w"> </span><span class="no">:as</span><span class="w"> </span><span class="n">opts</span><span class="p">}]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IInitState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">init-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">{</span><span class="no">:editing</span><span class="w"> </span><span class="n">false</span><span class="p">})</span><span class="w">
+    </span><span class="n">om/IRenderState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="p">{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">editing</span><span class="p">]}]</span><span class="w">
+      </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">text</span><span class="w"> </span><span class="p">(</span><span class="nb">get</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">edit-key</span><span class="p">)]</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/span</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:style</span><span class="w"> </span><span class="p">(</span><span class="nf">display</span><span class="w"> </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="n">editing</span><span class="p">))}</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/input</span><span class="w">
+            </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:style</span><span class="w"> </span><span class="p">(</span><span class="nf">display</span><span class="w"> </span><span class="n">editing</span><span class="p">)</span><span class="w">
+                 </span><span class="no">:value</span><span class="w"> </span><span class="n">text</span><span class="w">
+                 </span><span class="no">:onChange</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">handle-change</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">edit-key</span><span class="w"> </span><span class="n">owner</span><span class="p">)</span><span class="w">
+                 </span><span class="no">:onKeyDown</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="p">(</span><span class="nb">=</span><span class="w"> </span><span class="p">(</span><span class="nf">.-key</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w"> </span><span class="s">"Enter"</span><span class="p">)</span><span class="w">
+                                </span><span class="p">(</span><span class="nf">end-edit</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">edit-key</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="n">on-edit</span><span class="p">))</span><span class="w">
+                 </span><span class="no">:onBlur</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="w">
+                           </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="p">(</span><span class="nf">om/get-state</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:editing</span><span class="p">)</span><span class="w">
+                             </span><span class="p">(</span><span class="nf">end-edit</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">edit-key</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="n">on-edit</span><span class="p">)))})</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/button</span><span class="w">
+            </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:style</span><span class="w"> </span><span class="p">(</span><span class="nf">display</span><span class="w"> </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="n">editing</span><span class="p">))</span><span class="w">
+                 </span><span class="no">:onClick</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">om/set-state!</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:editing</span><span class="w"> </span><span class="n">true</span><span class="p">)}</span><span class="w">
+            </span><span class="s">"Edit"</span><span class="p">))))))</span><span class="w">
+</span></code></pre></div>
+<p>We also want to allow people to add classes. We know that the back end
+doesn&#39;t support this but we&#39;ll try it on the front end anyway to
+demonstrate the capabilities of <code>om-sync</code>.</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">create-class</span><span class="w"> </span><span class="p">[</span><span class="n">classes</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">class-id-el</span><span class="w">   </span><span class="p">(</span><span class="nf">om/get-node</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="s">"class-id"</span><span class="p">)</span><span class="w">
+        </span><span class="n">class-id</span><span class="w">      </span><span class="p">(</span><span class="nf">.-value</span><span class="w"> </span><span class="n">class-id-el</span><span class="p">)</span><span class="w">
+        </span><span class="n">class-name-el</span><span class="w"> </span><span class="p">(</span><span class="nf">om/get-node</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="s">"class-name"</span><span class="p">)</span><span class="w">
+        </span><span class="n">class-name</span><span class="w">    </span><span class="p">(</span><span class="nf">.-value</span><span class="w"> </span><span class="n">class-name-el</span><span class="p">)</span><span class="w">
+        </span><span class="n">new-class</span><span class="w">     </span><span class="p">{</span><span class="no">:class/id</span><span class="w"> </span><span class="n">class-id</span><span class="w"> </span><span class="no">:class/title</span><span class="w"> </span><span class="n">class-name</span><span class="p">}]</span><span class="w">
+    </span><span class="p">(</span><span class="nf">om/transact!</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">conj</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="n">new-class</span><span class="p">)</span><span class="w">
+      </span><span class="p">[</span><span class="no">:create</span><span class="w"> </span><span class="n">new-class</span><span class="p">])</span><span class="w">
+    </span><span class="p">(</span><span class="nf">set!</span><span class="w"> </span><span class="p">(</span><span class="nf">.-value</span><span class="w"> </span><span class="n">class-id-el</span><span class="p">)</span><span class="w"> </span><span class="s">""</span><span class="p">)</span><span class="w">
+    </span><span class="p">(</span><span class="nf">set!</span><span class="w"> </span><span class="p">(</span><span class="nf">.-value</span><span class="w"> </span><span class="n">class-name-el</span><span class="p">)</span><span class="w"> </span><span class="s">""</span><span class="p">)))</span><span class="w">
+</span></code></pre></div>
+<p>We update <code>classes-view</code> to include some new input fields:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">classes-view</span><span class="w"> </span><span class="p">[</span><span class="n">classes</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:id</span><span class="w"> </span><span class="s">"classes"</span><span class="p">}</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/h2</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Classes"</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">om/build</span><span class="w"> </span><span class="n">editable</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="p">{</span><span class="no">:opts</span><span class="w"> </span><span class="p">{</span><span class="no">:edit-key</span><span class="w"> </span><span class="no">:class/title</span><span class="p">}})</span><span class="w">
+            </span><span class="n">classes</span><span class="p">))</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/label</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"ID:"</span><span class="p">)</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/input</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:ref</span><span class="w"> </span><span class="s">"class-id"</span><span class="p">})</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/label</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Name:"</span><span class="p">)</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/input</span><span class="w"> </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:ref</span><span class="w"> </span><span class="s">"class-name"</span><span class="p">})</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/button</span><span class="w">
+            </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:onClick</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">create-class</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="n">owner</span><span class="p">))}</span><span class="w">
+           </span><span class="s">"Add"</span><span class="p">))))))</span><span class="w">
+</span></code></pre></div>
+<p>All this should look pretty straightforward by now.</p>
+
+<p>Finally we write <code>app-view</code>, add this right before the <code>om/root</code>
+expression:</p>
+<div class="highlight"><pre><code class="language-clj" data-lang="clj"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">app-view</span><span class="w"> </span><span class="p">[</span><span class="n">app</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IWillUpdate</span><span class="w">
+    </span><span class="p">(</span><span class="nf">will-update</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="n">next-props</span><span class="w"> </span><span class="n">next-state</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="p">(</span><span class="no">:err-msg</span><span class="w"> </span><span class="n">next-state</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nf">js/setTimeout</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">om/set-state!</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:err-msg</span><span class="w"> </span><span class="n">nil</span><span class="p">)</span><span class="w"> </span><span class="mi">5000</span><span class="p">)))</span><span class="w">
+    </span><span class="n">om/IRenderState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="p">{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">err-msg</span><span class="p">]}]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w">
+        </span><span class="p">(</span><span class="nf">om/build</span><span class="w"> </span><span class="n">om-sync</span><span class="w"> </span><span class="p">(</span><span class="no">:classes</span><span class="w"> </span><span class="n">app</span><span class="p">)</span><span class="w">
+          </span><span class="p">{</span><span class="no">:opts</span><span class="w"> </span><span class="p">{</span><span class="no">:view</span><span class="w"> </span><span class="n">classes-view</span><span class="w">
+                  </span><span class="no">:filter</span><span class="w"> </span><span class="p">(</span><span class="nb">comp</span><span class="w"> </span><span class="o">#</span><span class="p">{</span><span class="no">:create</span><span class="w"> </span><span class="no">:update</span><span class="w"> </span><span class="no">:delete</span><span class="p">}</span><span class="w"> </span><span class="n">tx-tag</span><span class="p">)</span><span class="w">
+                  </span><span class="no">:id-key</span><span class="w"> </span><span class="no">:class/id</span><span class="w">
+                  </span><span class="no">:on-success</span><span class="w"> </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">res</span><span class="w"> </span><span class="n">tx-data</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nb">println</span><span class="w"> </span><span class="n">res</span><span class="p">))</span><span class="w">
+                  </span><span class="no">:on-error</span><span class="w">
+                  </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">err</span><span class="w"> </span><span class="n">tx-data</span><span class="p">]</span><span class="w">
+                    </span><span class="p">(</span><span class="nf">reset!</span><span class="w"> </span><span class="n">app-state</span><span class="w"> </span><span class="p">(</span><span class="no">:old-state</span><span class="w"> </span><span class="n">tx-data</span><span class="p">))</span><span class="w">
+                    </span><span class="p">(</span><span class="nf">om/set-state!</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:err-msg</span><span class="w">
+                      </span><span class="s">"Oops! Sorry, something went wrong. Try again later."</span><span class="p">))}})</span><span class="w">
+         </span><span class="p">(</span><span class="nb">when</span><span class="w"> </span><span class="n">err-msg</span><span class="w">
+           </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="n">err-msg</span><span class="p">))))))</span><span class="w">
+</span></code></pre></div>
+<p>You can remove the <code>on-edit</code> function too.  <code>om-sync</code> will handle the PUT.</p>
+
+<p>We render <code>classes-view</code> via <code>om-sync</code>, this is specified by the
+<code>:view</code> option. We supply a <code>:filter</code> so that individual key presses
+don&#39;t get synchronized - this is why we tagged the <code>end-edit</code>
+<code>om/transact!</code> above with <code>:update</code>. <code>om-sync</code> needs to know which
+property represents an identifier the server understands in order to
+send incremental updates. Finally we establish <code>:on-success</code> and
+<code>:on-error</code> updates.</p>
+
+<p><code>:on-error</code> is the most interesting bit here - if there&#39;s a server error
+we just roll back the application state and present an error message.</p>
+
+<p>This is speculative UI programming, we can optimistically update the
+client yet trivially roll back if something goes wrong. And all of
+this can be done without polluting your actual components with
+synchronization or undo logic.</p>
+
+<p>Refresh your browser and make sure your JavaScript Console is
+open. Edit a class. You should see <code>{:status ok}</code> if it
+worked. Refresh the browser, you will see that the state persisted.</p>
+
+<p>Now put some random data into the new input fields and press
+&quot;Add&quot;. You should see the data briefly appear in the list and then
+disappear when we roll back the state because we could not succeed. An
+error message appears.</p>
+
+<p>Hopefully this tutorial demonstrates how Om allows application
+developers to focus on their problem domain and remove sources of
+incidental complexity.</p>
+
+<p>Having made it this far you can probably read through the <code>om-sync</code>
+source yourself and hopefully be inspired to send a pull request to
+improve so it can be leveraged in more contexts.</p>
+
+<p>In case you run intro trouble, you can find the final version of the
+code <a href="https://github.com/bensu/om-intermediate-tut">here</a>.</p>
+
+
+    <div class="docs-prevnext">
+      
+      
+    </div>
+  </div>
+</section>
+
+</body>
+
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Advance Tutorial | Om</title>
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" type="text/css" href="/css/om.css">
+  <link rel="stylesheet" type="text/css" href="/css/syntax.css">
+</head>
+
+<body>
+  <div class="container">
+
+  <div class="nav-main">
+    <div class="wrap">
+      <a class="nav-home" href="/index.html">
+        <img class="nav-logo" src="/img/logo.svg" width="36" height="36">
+        Om
+      </a>
+      <ul class="nav-site nav-site-internal">
+        <li><a href="/docs/index.html" class="active">Docs</a></li>
+        <li><a href="community.html">Community</a></li>
+      </ul>
+
+      <ul class="nav-site nav-site-external">
+        <li><a href="https://github.com/omcljs/om">GitHub</a>
+      </ul>
+    </div>
+  </div>
+
+  
+
+  <section class="content wrap documentationContent">
+  
+<div class="nav-docs">
+  <!-- Docs Nav -->
+  
+    <div class="nav-docs-section">
+      <h3>Quick Start</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Quick Start Title</h4>
+          
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+    <div class="nav-docs-section">
+      <h3>Om</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Tutorials</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/om/basic-tutorial.html">Basic Tutorial</a>
+                </li>
+              
+                <li>
+                  <a href="/om/intermediate-tutorial.html">Intermediate Tutorial</a>
+                </li>
+              
+                <li>
+                  <a href="/om/advance-tutorial.html" class="active">Advance Tutorial</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+        <li>
+          
+            <h4>Documentation</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/om/documentation.html">Documentation</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+        <li>
+          
+            <h4>Other</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/om/testing.html">Testing</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+    <div class="nav-docs-section">
+      <h3>Om.next</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Guide</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/guide-name.html">Guide Title</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+        <li>
+          
+            <h4>Reference</h4>
+          
+          
+            <ul>
+              
+                <li>
+                  <a href="/reference-name.html">Reference Title</a>
+                </li>
+              
+            </ul>
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+    <div class="nav-docs-section">
+      <h3>Resources</h3>
+      <ul>
+        
+        <li>
+          
+            <h4>Videos</h4>
+          
+            
+        </li>
+        
+      </ul>
+    </div>
+  
+</div>
+
+
+  <div class="inner-content">
+    <h1>
+      Advance Tutorial
+      <a class="edit-page-link" href="https://github.com/omcljs/om/tree/master/docs/docs/om/Advanced-Tutorial.md" target="_blank">Edit on GitHub</a>
+    </h1>
+    <div class="subHeader"></div>
+
+    <p>The following assumes familiarity with <a href="https://github.com/clojure/core.async">core.async</a>.</p>
+
+<p>While the beginner and intermediate tutorials are good for getting a
+feel for the Om primitives they are not representative guides on how to
+structure an Om application for scale.</p>
+
+<p>Cursors are a powerful abstraction but often not the tool to reach for
+when structuring larger applications. In the worst case cursors are a
+quick trip back to non-modular programs where every component has full
+knowledge and direct dependence on the global state of the
+application.</p>
+
+<p>In order to recover modularity we must reach for other tools. We&#39;ll
+see how core.async channels and reference cursors allow us to regain
+modularity in complex applications.</p>
+
+<p>The following is a loose set of patterns, real applications may need
+more or less than what is described. Still the following is a good
+starting point for doing your own explorations around organizing
+larger Om programs.</p>
+
+<ul>
+<li>The Request Channel</li>
+<li>The Publish &amp; Notification Channels</li>
+<li>Reference Cursors</li>
+</ul>
+<h2><a class="anchor" name="the-request-channel"></a>The Request Channel <a class="hash-link" href="#the-request-channel">#</a></h2><h3><a class="anchor" name="the-problem"></a>The Problem <a class="hash-link" href="#the-problem">#</a></h3>
+<p>In many applications you have some component several levels deep in
+the render tree. The question is, how do we get data to this component
+without having to pass data to everyone in between the root of the
+application and where the component actually lives?</p>
+<h3><a class="anchor" name="solution"></a>Solution <a class="hash-link" href="#solution">#</a></h3>
+<p>The Request Channel pattern allows us to avoid passing data through
+components uninterested in the data. The strategy is a familiar one -
+treat a component as if it were a client browser. Instead of
+receiving its data directly it will request it when it mounts. In
+order for this to work we need to establish a global service channel
+that can process requests from different parts of your application.</p>
+
+<p>Let us assume we&#39;ll have a table view somewhere whose contents will be
+requested via an XHR request. In the following we&#39;ll just mock out the
+remote data for simplicity.</p>
+
+<p>The global <code>serve</code> will be a multimethod. By using multimethods we can
+extensibly serve different &quot;client&quot; components in our
+application. Again this is a familiar pattern - a routing table.</p>
+
+<p>Note that <code>serve</code> takes a map that represents the request analogous to
+how you might process form parameters or a JSON API request server
+side. In order to respond to the client one of the arguments is a
+<em>response channel</em>. We simply write out the data the client needs onto
+that channel:</p>
+<div class="highlight"><pre><code class="language-cljs" data-lang="cljs"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">remote-data</span><span class="w"> </span><span class="p">(</span><span class="nf">vec</span><span class="w"> </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">str</span><span class="w"> </span><span class="s">"Item "</span><span class="w"> </span><span class="n">%</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nb">range</span><span class="w"> </span><span class="mi">100</span><span class="p">))))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defmulti</span><span class="w"> </span><span class="n">serve</span><span class="w"> </span><span class="no">:op</span><span class="p">)</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defmethod</span><span class="w"> </span><span class="n">serve</span><span class="w"> </span><span class="no">:data</span><span class="w">
+  </span><span class="p">[{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">start</span><span class="w"> </span><span class="n">per-page</span><span class="w"> </span><span class="n">res</span><span class="p">]}]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">put!</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="p">(</span><span class="nb">subvec</span><span class="w"> </span><span class="n">remote-data</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="n">per-page</span><span class="p">)))</span><span class="w">
+</span></code></pre></div>
+<p>When we establish our application root we&#39;ll do something like the
+following. You can ignore <code>notif-chan</code> and <code>pub-chan</code> for now, they
+form the other pattern we&#39;ll talk about momentarily:</p>
+<div class="highlight"><pre><code class="language-cljs" data-lang="cljs"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">req-chan</span><span class="w">     </span><span class="p">(</span><span class="nf">chan</span><span class="p">)</span><span class="w">
+        </span><span class="n">pub-chan</span><span class="w">     </span><span class="p">(</span><span class="nf">chan</span><span class="p">)</span><span class="w">
+        </span><span class="n">notif-chan</span><span class="w">   </span><span class="p">(</span><span class="nf">pub</span><span class="w"> </span><span class="n">pub-chan</span><span class="w"> </span><span class="no">:topic</span><span class="p">)]</span><span class="w">
+
+    </span><span class="c1">;; server loop
+</span><span class="w">    </span><span class="p">(</span><span class="nf">go</span><span class="w">
+      </span><span class="p">(</span><span class="nf">while</span><span class="w"> </span><span class="n">true</span><span class="w">
+        </span><span class="p">(</span><span class="nf">serve</span><span class="w"> </span><span class="p">(</span><span class="nf">&lt;!</span><span class="w"> </span><span class="n">req-chan</span><span class="p">))))</span><span class="w">
+
+    </span><span class="p">(</span><span class="nf">om/root</span><span class="w">
+      </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">app-cursor</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+        </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+          </span><span class="n">om/IRender</span><span class="w">
+          </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+            </span><span class="n">...</span><span class="p">)))</span><span class="w">
+      </span><span class="n">app-state</span><span class="w">
+      </span><span class="p">{</span><span class="no">:shared</span><span class="w"> </span><span class="p">{</span><span class="no">:req-chan</span><span class="w">   </span><span class="n">req-chan</span><span class="w">
+                </span><span class="no">:notif-chan</span><span class="w"> </span><span class="n">notif-chan</span><span class="w">
+                </span><span class="no">:pub-chan</span><span class="w">   </span><span class="n">pub-chan</span><span class="p">}</span><span class="w">
+       </span><span class="no">:target</span><span class="w"> </span><span class="p">(</span><span class="nb">.</span><span class="w"> </span><span class="n">js/document</span><span class="w"> </span><span class="p">(</span><span class="nf">getElementById</span><span class="w"> </span><span class="s">"app"</span><span class="p">))})))</span><span class="w">
+</span></code></pre></div>
+<p>Your table view component might look something like the following:</p>
+<div class="highlight"><pre><code class="language-cljs" data-lang="cljs"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">table-view</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IInitState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">init-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">{</span><span class="no">:start</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="no">:per-page</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="no">:data</span><span class="w"> </span><span class="n">nil</span><span class="p">})</span><span class="w">
+    </span><span class="n">om/IDidMount</span><span class="w">
+    </span><span class="p">(</span><span class="nf">did-mount</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">res</span><span class="w"> </span><span class="p">(</span><span class="nf">chan</span><span class="p">)]</span><span class="w">
+        </span><span class="p">(</span><span class="nf">go</span><span class="w">
+          </span><span class="p">(</span><span class="nf">&gt;!</span><span class="w"> </span><span class="p">(</span><span class="no">:req-chan</span><span class="w"> </span><span class="p">(</span><span class="nf">om/get-shared</span><span class="w"> </span><span class="n">owner</span><span class="p">))</span><span class="w">
+              </span><span class="p">{</span><span class="no">:op</span><span class="w"> </span><span class="no">:data</span><span class="w"> </span><span class="no">:start</span><span class="w"> </span><span class="n">start</span><span class="w">
+               </span><span class="no">:per-page</span><span class="w"> </span><span class="n">per-page</span><span class="w">
+               </span><span class="no">:res</span><span class="w"> </span><span class="n">res</span><span class="p">})</span><span class="w">
+          </span><span class="p">(</span><span class="nf">om/set-state!</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:data</span><span class="w"> </span><span class="p">(</span><span class="nf">&lt;!</span><span class="w"> </span><span class="n">res</span><span class="p">)))))</span><span class="w">
+    </span><span class="n">om/IRenderState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="p">{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="p">]}]</span><span class="w">
+      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">data</span><span class="w">
+        </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/table</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="n">table-row</span><span class="w"> </span><span class="n">data</span><span class="p">))</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="s">"Loading ..."</span><span class="p">)))))</span><span class="w">
+</span></code></pre></div>
+<p>Now any component that needs data can get at it. No need to share
+global state all over your application.</p>
+<h2><a class="anchor" name="the-publish-amp-notification-channels"></a>The Publish &amp; Notification Channels <a class="hash-link" href="#the-publish-amp-notification-channels">#</a></h2><h3><a class="anchor" name="the-problem"></a>The Problem <a class="hash-link" href="#the-problem">#</a></h3>
+<p>Component B and Component C do not share a common parent Component A
+yet they need to communicate to each other. How do we synchronize
+state without again passing the global app state around so that B &amp; C
+can mutate some value they synchronize on? Component B needs to tell
+Component C something important without having a direct reference to
+Component C.</p>
+<h3><a class="anchor" name="the-publish-channel"></a>The Publish Channel <a class="hash-link" href="#the-publish-channel">#</a></h3>
+<p>Component B should publish a topic onto <code>pub-chan</code>.</p>
+<div class="highlight"><pre><code class="language-cljs" data-lang="cljs"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">widget-b</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="nf">dom/button</span><span class="w">
+        </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:onClick</span><span class="w">
+             </span><span class="o">#</span><span class="p">(</span><span class="nf">put!</span><span class="w"> </span><span class="p">(</span><span class="no">:pub-chan</span><span class="w"> </span><span class="p">(</span><span class="nf">om/get-shared</span><span class="w"> </span><span class="n">owner</span><span class="p">))</span><span class="w">
+                    </span><span class="p">{</span><span class="no">:topic</span><span class="w"> </span><span class="no">:hello</span><span class="w"> </span><span class="no">:data</span><span class="w"> </span><span class="s">"Hi there!"</span><span class="p">})}</span><span class="w">
+        </span><span class="s">"Click me!"</span><span class="p">))))</span><span class="w">
+</span></code></pre></div>
+<p>But how will Component C get this message?</p>
+<h3><a class="anchor" name="the-notification-channel"></a>The Notification Channel <a class="hash-link" href="#the-notification-channel">#</a></h3>
+<p>When Component C mounts it subscribes to topics it cares about. This
+looks something like the following:</p>
+<div class="highlight"><pre><code class="language-cljs" data-lang="cljs"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">widget-c</span><span class="w"> </span><span class="p">[</span><span class="n">data</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IInitState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">init-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">{</span><span class="no">:message</span><span class="w"> </span><span class="n">nil</span><span class="p">})</span><span class="w">
+    </span><span class="n">om/IDidMount</span><span class="w">
+    </span><span class="p">(</span><span class="nf">did-mount</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">events</span><span class="w"> </span><span class="p">(</span><span class="nf">sub</span><span class="w"> </span><span class="p">(</span><span class="no">:notif-chan</span><span class="w"> </span><span class="p">(</span><span class="nf">om/get-shared</span><span class="w"> </span><span class="n">owner</span><span class="p">))</span><span class="w"> </span><span class="no">:hello</span><span class="w"> </span><span class="p">(</span><span class="nf">chan</span><span class="p">))]</span><span class="w">
+        </span><span class="p">(</span><span class="nf">go</span><span class="w">
+          </span><span class="p">(</span><span class="nb">loop</span><span class="w"> </span><span class="p">[</span><span class="n">e</span><span class="w"> </span><span class="p">(</span><span class="nf">&lt;!</span><span class="w"> </span><span class="n">events</span><span class="p">)]</span><span class="w">
+            </span><span class="p">(</span><span class="nf">om/set-state!</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="no">:message</span><span class="w"> </span><span class="p">(</span><span class="no">:data</span><span class="w"> </span><span class="n">e</span><span class="p">))</span><span class="w">
+            </span><span class="p">(</span><span class="nf">recur</span><span class="w"> </span><span class="p">(</span><span class="nf">&lt;!</span><span class="w"> </span><span class="n">events</span><span class="p">))))))</span><span class="w">
+    </span><span class="n">om/IRenderState</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render-state</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="p">{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">message</span><span class="p">]}]</span><span class="w">
+      </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">message</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/p</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/p</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="s">"Waiting ... waiting ... waiting ..."</span><span class="p">)))))</span><span class="w">
+</span></code></pre></div><h2><a class="anchor" name="reference-cursors"></a>Reference Cursors <a class="hash-link" href="#reference-cursors">#</a></h2>
+<p>Building truly modular and reusable components is a time consuming
+task. In most cases this level of abstraction is outside the time
+constraints of the problem at hand. Introducing channels to do
+something as simple as modifying a collection introduces manual
+resource management (of the go loops) and a considerable amount of
+ceremony.</p>
+
+<p>From version 0.8.0, Om offers a new tool for this - reference cursors. Reference
+cursors are like cursors but they have the novel property of
+representing an identity in the application state that you can
+<em>observe</em>. Observation is similar to React event handlers - there is no need
+to worry about observing multiple times nor is there any concern about
+needing to unobserve. Reference cursors fully support the Om state
+management model - time travel properties are preserved.</p>
+
+<p>Using reference cursors is simple and natural and allows components to be
+organized around a shared API they can just call out to.</p>
+
+<p>For example suppose we want a logical collection from a vector in our
+app state. We can now write an API for it using reference cursors:</p>
+<div class="highlight"><pre><code class="language-cljs" data-lang="cljs"><span class="p">(</span><span class="k">def</span><span class="w"> </span><span class="n">app-state</span><span class="w">
+  </span><span class="p">(</span><span class="nf">atom</span><span class="w"> </span><span class="p">{</span><span class="no">:items</span><span class="w"> </span><span class="p">[{</span><span class="no">:text</span><span class="w"> </span><span class="s">"cat"</span><span class="p">}</span><span class="w"> </span><span class="p">{</span><span class="no">:text</span><span class="w"> </span><span class="s">"dog"</span><span class="p">}</span><span class="w"> </span><span class="p">{</span><span class="no">:text</span><span class="w"> </span><span class="s">"bird"</span><span class="p">}]}))</span><span class="w">
+
+</span><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">items</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">om/ref-cursor</span><span class="w"> </span><span class="p">(</span><span class="no">:items</span><span class="w"> </span><span class="p">(</span><span class="nf">om/root-cursor</span><span class="w"> </span><span class="n">app-state</span><span class="p">))))</span><span class="w">
+</span></code></pre></div>
+<p>In a subview we can now simply write the following. </p>
+<div class="highlight"><pre><code class="language-cljs" data-lang="cljs"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">sub-view</span><span class="w"> </span><span class="p">[{</span><span class="no">:keys</span><span class="w"> </span><span class="p">[</span><span class="n">title</span><span class="p">]}</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">xs</span><span class="w"> </span><span class="p">(</span><span class="nf">om/observe</span><span class="w"> </span><span class="n">owner</span><span class="w"> </span><span class="p">(</span><span class="nf">items</span><span class="p">))]</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/h2</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="n">title</span><span class="p">)</span><span class="w">
+          </span><span class="p">(</span><span class="nb">apply</span><span class="w"> </span><span class="n">dom/ul</span><span class="w"> </span><span class="n">nil</span><span class="w">
+            </span><span class="p">(</span><span class="nb">map</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nf">dom/li</span><span class="w"> </span><span class="n">nil</span><span class="w"> </span><span class="p">(</span><span class="no">:text</span><span class="w"> </span><span class="n">%</span><span class="p">))</span><span class="w"> </span><span class="n">xs</span><span class="p">)))))))</span><span class="w">
+</span></code></pre></div>
+<p>This is very natural and straightforward, the component did not need
+to take its data from a parent nor did it need to receive it via a
+channel.</p>
+
+<p>Now imagine we have a parent view that looks like the following:</p>
+<div class="highlight"><pre><code class="language-cljs" data-lang="cljs"><span class="p">(</span><span class="k">defn</span><span class="w"> </span><span class="n">main-view</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="w"> </span><span class="n">owner</span><span class="p">]</span><span class="w">
+  </span><span class="p">(</span><span class="nf">reify</span><span class="w">
+    </span><span class="n">om/IRender</span><span class="w">
+    </span><span class="p">(</span><span class="nf">render</span><span class="w"> </span><span class="p">[</span><span class="n">_</span><span class="p">]</span><span class="w">
+      </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">xs</span><span class="w"> </span><span class="p">(</span><span class="nf">items</span><span class="p">)]</span><span class="w">
+        </span><span class="p">(</span><span class="nf">dom/div</span><span class="w"> </span><span class="n">nil</span><span class="w">
+          </span><span class="p">(</span><span class="nf">om/build</span><span class="w"> </span><span class="n">sub-view</span><span class="w"> </span><span class="p">{</span><span class="no">:title</span><span class="w"> </span><span class="s">"View A"</span><span class="p">})</span><span class="w">
+          </span><span class="p">(</span><span class="nf">om/build</span><span class="w"> </span><span class="n">sub-view</span><span class="w"> </span><span class="p">{</span><span class="no">:title</span><span class="w"> </span><span class="s">"View B"</span><span class="p">})</span><span class="w">
+          </span><span class="p">(</span><span class="nf">dom/button</span><span class="w">
+            </span><span class="o">#</span><span class="n">js</span><span class="w"> </span><span class="p">{</span><span class="no">:onClick</span><span class="w">
+                 </span><span class="p">(</span><span class="k">fn</span><span class="w"> </span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="w"> </span><span class="p">(</span><span class="nf">om/transact!</span><span class="w"> </span><span class="n">xs</span><span class="w"> </span><span class="o">#</span><span class="p">(</span><span class="nb">assoc</span><span class="w"> </span><span class="n">%</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">{</span><span class="no">:text</span><span class="w"> </span><span class="s">"zebra"</span><span class="p">})))}</span><span class="w">
+            </span><span class="s">"Switch To Zebra!"</span><span class="p">))))))</span><span class="w">
+</span></code></pre></div>
+<p>This parent is blissfully unaware that two children components also
+rely on the same logical collection. Notice that it can <code>transact!</code> on
+the reference cursor the same as any other cursor.</p>
+
+<p>Many existing convoluted patterns around the manipulation of
+application data can be circumvented simply by using reference cursors
+and designing a simple API that any component can call into.</p>
+<h2><a class="anchor" name="further-investigation-needed"></a>Further Investigation Needed <a class="hash-link" href="#further-investigation-needed">#</a></h2>
+<p>The three patterns above eliminate many cases where we may have relied
+on passing around too much of the application state for
+coordination. Nothing in the tutorial is conclusive, rather treat it
+as small set of guidelines to build up more expressive functionality
+suitable for the large application you are building.</p>
+
+
+    <div class="docs-prevnext">
+      
+      
+    </div>
+  </div>
+</section>
+
+</body>
+
+</html>
